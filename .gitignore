@@ -18,3 +18,7 @@ yarn-error.log*
 # Solana / Anchor build artifacts
 solana/target
 solana/.anchor
+
+# Solana keypairs (replaced by env vars)
+solana-admin-keypair.json
+solana/programs/rentme-escrow/keypair.json
