@@ -1,0 +1,113 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  padding-bottom: 32px;
+}
+
+.actions {
+  margin: 24px 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chatBtn {
+  display: flex;
+  height: 48px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: $radius-lg;
+  background: $accent;
+  font-size: 14px;
+  font-weight: 500;
+  color: $surface;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: $accent-dark;
+  }
+}
+
+.contactGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.contactCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid $line;
+  border-radius: $radius-lg;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: $canvas;
+  }
+}
+
+.contactIcon {
+  color: $accent;
+}
+
+.contactLabel {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.faqSection {
+  margin: 32px 16px 0;
+  padding-bottom: 32px;
+}
+
+.faqTitle {
+  font-size: 12px;
+  color: $ink-soft;
+}
+
+.faqList {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq {
+  border: 1px solid $line;
+  border-radius: $radius-lg;
+  background: $surface;
+}
+
+.faqQuestion {
+  display: flex;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  font-size: 13px;
+  font-weight: 500;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.faqIcon {
+  flex-shrink: 0;
+  color: $accent;
+}
+
+.faqAnswer {
+  border-top: 1px solid $line;
+  padding: 8px 16px 16px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: $ink-soft;
+}

@@ -1,0 +1,163 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  @include page-pad;
+}
+
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.stepDone {
+  @include pill($verified-soft, $verified);
+}
+
+.stepActive {
+  @include pill($trust-soft, $trust);
+}
+
+.stepPending {
+  @include pill($canvas, $ink-faint);
+}
+
+.stepArrow {
+  color: $ink-faint;
+}
+
+.countdown {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.countdownLabel {
+  margin-bottom: 4px;
+  font-size: 11px;
+  color: $ink-soft;
+}
+
+.countdownValue {
+  font-family: $font-mono;
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.propertyCard {
+  margin-bottom: 20px;
+  padding: 12px;
+}
+
+.propertyRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.propertyTitle {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.propertyPrice {
+  font-size: 11px;
+  color: $ink-soft;
+}
+
+.propertyThumb {
+  display: flex;
+  height: 34px;
+  width: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: $canvas;
+}
+
+.thumbIcon {
+  color: $ink-faint;
+}
+
+.acceptBtn {
+  @include btn-primary;
+  margin-bottom: 10px;
+  border-radius: $radius-lg;
+  font-size: 14px;
+  text-align: center;
+}
+
+.reportBtn {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid $line;
+  border-radius: $radius-lg;
+  background: $surface;
+  font-size: 14px;
+  color: $danger;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: $danger-soft;
+  }
+}
+
+.reportSheet {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.reportCopy {
+  color: $ink-soft;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: $ink-soft;
+  font-size: 12px;
+  font-weight: 600;
+
+  select {
+    @include input-field;
+    appearance: none;
+    color: $ink;
+    font-weight: 500;
+  }
+}
+
+.reportStatus {
+  padding: 10px 12px;
+  border-radius: $radius-sm;
+  background: $canvas;
+  color: $ink-soft;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.sheetActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.submitReportBtn {
+  @include btn-primary;
+  @include tap-scale;
+}
+
+.cancelReportBtn {
+  @include btn-ghost;
+  @include tap-scale;
+}

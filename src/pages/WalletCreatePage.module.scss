@@ -1,0 +1,178 @@
+@use "../styles/tokens" as *;
+
+.page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: $surface;
+  min-height: 100%;
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 32px;
+  text-align: center;
+  gap: 16px;
+}
+
+.iconWrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: $accent-soft;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $accent;
+  margin-bottom: 8px;
+}
+
+.checkIcon {
+  color: $verified;
+}
+
+.spinner {
+  color: $accent;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  color: $ink;
+  margin: 0;
+}
+
+.text {
+  font-size: 15px;
+  color: $ink-soft;
+  line-height: 1.5;
+  max-width: 340px;
+  margin: 0;
+}
+
+.textSecondary {
+  font-size: 13px;
+  color: $ink-faint;
+  line-height: 1.5;
+  max-width: 320px;
+  margin: 0;
+}
+
+.warning {
+  font-size: 14px;
+  color: $warn;
+  line-height: 1.5;
+  max-width: 340px;
+  margin: 0;
+  padding: 12px 16px;
+  background: $warn-soft;
+  border-radius: $radius-md;
+}
+
+.field {
+  width: 100%;
+  max-width: 280px;
+}
+
+.pinInput {
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  font-size: 24px;
+  font-family: $font-mono;
+  color: $ink;
+  background: $surface-alt;
+  border: none;
+  border-radius: $radius-md;
+  text-align: center;
+  letter-spacing: 0.5em;
+  outline: none;
+  transition: box-shadow 0.2s;
+
+  &::placeholder {
+    letter-spacing: 0;
+    color: $ink-faint;
+    font-size: 17px;
+  }
+
+  &:focus {
+    box-shadow: inset 0 0 0 2px $accent;
+  }
+}
+
+.toggleLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: $ink-soft;
+  cursor: pointer;
+}
+
+.error {
+  font-size: 14px;
+  color: $danger;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 280px;
+  margin-top: 12px;
+}
+
+.primaryBtn {
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: $radius-md;
+  background: $accent;
+  color: $on-accent;
+  font-size: 17px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):active {
+    opacity: 0.85;
+  }
+}
+
+.ghostBtn {
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: $radius-md;
+  background: transparent;
+  color: $ink-soft;
+  font-size: 15px;
+  font-weight: 400;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:active {
+    opacity: 0.6;
+  }
+}

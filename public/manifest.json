@@ -1,0 +1,10 @@
+{
+  "name": "RentMe",
+  "short_name": "RentMe",
+  "description": "Find real homes. Rent with trust.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf8f4",
+  "theme_color": "#d85a30",
+  "orientation": "portrait"
+}

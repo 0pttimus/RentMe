@@ -1,0 +1,667 @@
+@use "../styles/tokens" as *;
+
+.page {
+  padding-bottom: 80px;
+}
+
+.header {
+  margin-bottom: 12px;
+}
+
+.headerTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.subtitle {
+  color: $ink-soft;
+  font-size: 13px;
+  margin: 2px 0 0;
+}
+
+.exitBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border: 1px solid $line;
+  border-radius: 999px;
+  background: $surface;
+  color: $ink-soft;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+
+  &:active {
+    background: $danger-soft;
+    color: $danger;
+    border-color: transparent;
+  }
+}
+
+.actions {
+  margin-bottom: 12px;
+}
+
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  background: $surface;
+  color: $ink;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:active {
+    background: $surface-alt;
+  }
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 14px;
+  border-radius: $radius-md;
+  background: $surface;
+  box-shadow: $shadow-sm;
+
+  @media (max-width: 768px) {
+    border-radius: 0;
+    margin: 0 -16px 16px;
+  }
+}
+
+.toggleInfo {
+  min-width: 0;
+}
+
+.toggleLabel {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.toggleHint {
+  margin: 2px 0 0;
+  color: $ink-soft;
+  font-size: 11px;
+}
+
+.toggle {
+  position: relative;
+  width: 48px;
+  height: 28px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: $line;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.toggleOn {
+  background: $accent;
+}
+
+.thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s ease;
+}
+
+.toggleOn .thumb {
+  transform: translateX(20px);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.stat {
+  padding: 12px 8px;
+  border-radius: $radius-md;
+  background: $surface;
+  box-shadow: $shadow-sm;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    border-radius: 0;
+  }
+}
+
+.statValue {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.statLabel {
+  color: $ink-soft;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 4px;
+  border-radius: $radius-md;
+  background: $surface-alt;
+
+  @media (max-width: 768px) {
+    margin: 0 -16px 16px;
+    border-radius: 0;
+  }
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 8px;
+  border: 0;
+  border-radius: $radius-sm;
+  background: transparent;
+  color: $ink-faint;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+.tabActive {
+  background: $surface;
+  color: $ink;
+  box-shadow: $shadow-sm;
+  font-weight: 600;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: $danger;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 48px 16px;
+  color: $ink-faint;
+
+  p {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  svg {
+    opacity: 0.4;
+  }
+}
+
+.card {
+  padding: 16px;
+  border-radius: $radius-md;
+  background: $surface;
+  box-shadow: $shadow-sm;
+
+  @media (max-width: 768px) {
+    border-radius: 0;
+    margin: 0 -16px;
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.cardMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardTitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardTenant {
+  font-size: 12px;
+  color: $ink-soft;
+  margin: 2px 0 0;
+}
+
+.budgetLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: $accent;
+  flex-shrink: 0;
+}
+
+.cardDesc {
+  font-size: 13px;
+  color: $ink-soft;
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+
+.cardDate {
+  font-size: 11px;
+  color: $ink-faint;
+  margin: 0;
+}
+
+.cardActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.acceptBtn, .rejectBtn, .contactBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border-radius: $radius-sm;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: 0;
+  transition: opacity 0.15s;
+
+  &:active {
+    opacity: 0.75;
+  }
+}
+
+.acceptBtn {
+  background: $accent;
+  color: $on-accent;
+}
+
+.rejectBtn {
+  background: $danger-soft;
+  color: $danger;
+}
+
+.contactBtn {
+  background: $surface-alt;
+  color: $ink;
+}
+
+.activeMeta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: $ink-soft;
+  margin: 0 0 4px;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
+.statusActive {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: $accent-soft;
+  color: $accent;
+  flex-shrink: 0;
+}
+
+.statusCompleted {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: $verified-soft;
+  color: $verified;
+  flex-shrink: 0;
+}
+
+.statusDeclined {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: $danger-soft;
+  color: $danger;
+  flex-shrink: 0;
+}
+
+.historyFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.reportBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border: 1px solid $line;
+  border-radius: 999px;
+  background: transparent;
+  color: $ink-faint;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:active {
+    background: $danger-soft;
+    color: $danger;
+    border-color: transparent;
+  }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.reportSheet {
+  width: 100%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: $radius-xl;
+  background: $surface;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.reportHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+.reportClose {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 0;
+  background: $surface-alt;
+  color: $ink-faint;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.reportTenant {
+  font-size: 13px;
+  margin: 0 0 2px;
+}
+
+.reportJob {
+  font-size: 12px;
+  color: $ink-soft;
+  margin: 0 0 16px;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.fieldLabel {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: $ink-soft;
+  margin-bottom: 6px;
+}
+
+.reasonBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  background: $surface;
+  color: $ink;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.reasonPicker {
+  margin-top: 4px;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  overflow: hidden;
+}
+
+.reasonOption {
+  width: 100%;
+  display: block;
+  padding: 10px 12px;
+  border: 0;
+  background: $surface;
+  color: $ink;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+
+  & + & {
+    border-top: 1px solid $line;
+  }
+}
+
+.reasonOptionActive {
+  background: $accent-soft;
+  color: $accent;
+  font-weight: 600;
+}
+
+.proofGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.proofThumb {
+  width: 72px;
+  height: 72px;
+  border-radius: $radius-sm;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.addProofBtn {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: 1px dashed $line;
+  border-radius: $radius-sm;
+  background: transparent;
+  color: $ink-faint;
+  font-size: 10px;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:active {
+    background: $surface-alt;
+  }
+}
+
+.submitBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 13px;
+  border: 0;
+  border-radius: $radius-sm;
+  background: $danger;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.reportSuccess {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 0;
+  text-align: center;
+  color: $verified;
+
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  p {
+    font-size: 13px;
+    color: $ink-soft;
+    margin: 0;
+    max-width: 260px;
+  }
+}
+
+.switchSection {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid $line;
+  text-align: center;
+}
+
+.switchBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+  color: $ink-soft;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s;
+
+  &:hover {
+    color: $ink;
+  }
+}

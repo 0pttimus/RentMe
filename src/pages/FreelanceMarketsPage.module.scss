@@ -1,0 +1,125 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  @media (min-width: 769px) {
+    max-width: 820px;
+  }
+}
+
+.headerRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.exitBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border: 1px solid $line;
+  border-radius: 999px;
+  background: $surface;
+  color: $ink-soft;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+  white-space: nowrap;
+
+  &:hover {
+    background: $danger-soft;
+    color: $danger;
+    border-color: transparent;
+  }
+}
+
+.categories {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.cat,
+.catActive {
+  @include pill($surface, $ink-soft);
+  flex: 0 0 auto;
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.catActive {
+  background: $accent-soft;
+  color: $accent;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card {
+  padding: 14px;
+  border-radius: $radius-md;
+  background: $surface;
+  box-shadow: $shadow-sm;
+  cursor: pointer;
+  @include tap-scale;
+
+  @media (max-width: 768px) {
+    border-radius: 0;
+    margin: 0 -16px;
+  }
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.category {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: $accent-soft;
+  color: $accent;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.posted {
+  color: $ink-faint;
+  font-size: 10px;
+}
+
+.title {
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.location {
+  margin-bottom: 2px;
+  color: $ink-soft;
+  font-size: 12px;
+}
+
+.budget {
+  color: $accent;
+  font-size: 13px;
+  font-weight: 600;
+}

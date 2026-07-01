@@ -1,0 +1,71 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  @include page-pad;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.filterActive {
+  @include pill($trust-soft, $trust);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gigCard {
+  padding: 14px;
+}
+
+.gigRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gigInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gigIcon {
+  display: flex;
+  height: 34px;
+  width: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: $canvas;
+}
+
+.gigTitle {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.gigMeta {
+  font-size: 11px;
+  color: $ink-soft;
+}
+
+.gigPrice {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.footer {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 10px;
+  color: $ink-faint;
+}

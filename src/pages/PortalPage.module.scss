@@ -1,0 +1,194 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  @media (min-width: 769px) {
+    max-width: 640px;
+  }
+}
+
+.roleToggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.roleBtn {
+  flex: 1;
+  padding: 10px;
+  border: 0;
+  border-radius: 12px;
+  background: $surface-alt;
+  color: $ink-soft;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.roleBtnActive {
+  background: $accent;
+  color: white;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectionLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: $ink-soft;
+}
+
+.rentalList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rentalCard {
+  display: block;
+  padding: 12px;
+  border-radius: 16px;
+  background: $surface;
+  box-shadow: $shadow-sm;
+  text-decoration: none;
+  transition: box-shadow 0.15s;
+
+  &:active {
+    box-shadow: $shadow-md;
+  }
+}
+
+.rentalTop {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.rentalThumb {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex: 0 0 auto;
+  background: $surface-alt;
+}
+
+.rentalInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.rentalTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: $ink;
+  margin-bottom: 3px;
+}
+
+.rentalMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: $ink-faint;
+}
+
+.rolePill {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: $accent-soft;
+  color: $accent;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.rentalProgress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: $ink-faint;
+    white-space: nowrap;
+  }
+}
+
+.progressBar {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: $surface-alt;
+  overflow: hidden;
+
+  span {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: $accent;
+  }
+}
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 14px;
+  background: $surface-alt;
+  color: $ink-soft;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s;
+
+  &:active {
+    background: $line;
+  }
+}
+
+.emptyCard {
+  padding: 24px;
+  text-align: center;
+  border-radius: 16px;
+}
+
+.emptyTitle {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.emptyText {
+  font-size: 13px;
+  color: $ink-faint;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.emptyBtn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: $accent;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}

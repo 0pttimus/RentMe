@@ -1,0 +1,46 @@
+@use "../styles/tokens" as *;
+
+.page {
+  padding-bottom: 32px;
+}
+
+.pointsCard {
+  margin: 24px 16px 0;
+  padding: 24px;
+  text-align: center;
+}
+
+.giftIcon {
+  margin: 0 auto;
+  color: $accent;
+}
+
+.points {
+  margin-top: 8px;
+  font-size: 36px;
+  font-weight: 500;
+}
+
+.pointsLabel {
+  font-size: 14px;
+  color: $ink-soft;
+}
+
+.transactions {
+  margin: 24px 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tx {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.txPoints {
+  font-weight: 500;
+  color: $accent;
+}

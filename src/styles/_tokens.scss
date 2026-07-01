@@ -1,0 +1,44 @@
+$canvas: var(--color-canvas);
+$surface: var(--color-surface);
+$surface-alt: var(--color-surface-alt);
+$ink: var(--color-ink);
+$ink-soft: var(--color-ink-soft);
+$ink-faint: var(--color-ink-faint);
+$line: var(--color-line);
+
+$accent: var(--color-accent);
+$accent-dark: var(--color-accent-dark);
+$accent-soft: var(--color-accent-soft);
+
+$verified: var(--color-verified);
+$verified-soft: var(--color-verified-soft);
+
+$trust: var(--color-trust);
+$trust-soft: var(--color-trust-soft);
+
+$warn: var(--color-warn);
+$warn-soft: var(--color-warn-soft);
+
+$danger: var(--color-danger);
+$danger-soft: var(--color-danger-soft);
+
+$on-accent: var(--color-on-accent);
+$scrim: var(--color-scrim);
+
+$shadow-sm: var(--shadow-sm);
+$shadow-md: var(--shadow-md);
+$shadow-lg: var(--shadow-lg);
+
+$font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+  "Inter", "Segoe UI", system-ui, sans-serif;
+$font-mono: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+$radius-xs: 6px;
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 20px;
+
+$tap-scale: 0.97;
+$ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+$ease-out: cubic-bezier(0.22, 1, 0.36, 1);

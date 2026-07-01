@@ -1,0 +1,18 @@
+[toolchain]
+anchor_version = "1.1.2"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.devnet]
+rentme_escrow = "GCNQKEZyJVa3qUMJSNv7o8C48GuHcvBbaYscer4ccEk"
+
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "npx jest tests/"
+
+[hooks]

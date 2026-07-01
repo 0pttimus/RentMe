@@ -1,0 +1,55 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  padding-bottom: 32px;
+}
+
+.content {
+  margin: 24px 16px 0;
+}
+
+.rentCard {
+  padding: 16px;
+  border: 1px solid $line;
+  border-radius: $radius-lg;
+  background: $surface;
+}
+
+.rentTitle {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.rentDue {
+  margin-top: 2px;
+  font-size: 12px;
+  color: $ink-soft;
+}
+
+.rentAmount {
+  margin-top: 12px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.payBtn {
+  @include btn-primary;
+  margin-top: 24px;
+  height: 48px;
+  border-radius: $radius-lg;
+  font-size: 14px;
+}
+
+.empty {
+  margin-top: 24px;
+  text-align: center;
+  color: $ink-soft;
+  font-size: 14px;
+}
+
+.depositLabel {
+  font-size: 14px;
+  font-weight: 400;
+  color: $ink-soft;
+}

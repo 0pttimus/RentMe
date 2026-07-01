@@ -1,0 +1,60 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.link {
+  display: block;
+  @include tap-scale;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: $surface;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
+
+  @media (max-width: 768px) {
+    border-radius: 0;
+  }
+}
+
+.carouselWrap {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta {
+  font-size: 11px;
+  color: $ink-soft;
+}
+
+.features {
+  overflow: hidden;
+  color: $ink-faint;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

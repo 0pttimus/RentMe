@@ -1,0 +1,270 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  @media (min-width: 769px) {
+    max-width: 640px;
+  }
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-left: -8px;
+  margin-bottom: 4px;
+  border: 0;
+  background: transparent;
+  color: $accent;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:active {
+    opacity: 0.5;
+  }
+}
+
+.heading {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  letter-spacing: -0.2px;
+}
+
+.sub {
+  color: $ink-soft;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.catCard {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 14px;
+  border: 0;
+  border-radius: $radius-md;
+  background: $surface;
+  box-shadow: $shadow-sm;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+  color: $ink;
+  @include tap-scale;
+
+  &:hover {
+    background: $surface-alt;
+  }
+
+  @media (max-width: 768px) {
+    border-radius: 0;
+  }
+}
+
+.catName {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.catCount {
+  color: $ink-soft;
+  font-size: 11px;
+}
+
+.workerList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.empty {
+  text-align: center;
+  padding: 32px 0;
+
+  p {
+    color: $ink-soft;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+}
+
+.backBtn {
+  border: 0;
+  background: transparent;
+  color: $accent;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.workerCard {
+  border-radius: $radius-md;
+  background: $surface;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    border-radius: 0;
+    margin: 0 -16px;
+  }
+}
+
+.workerHeader {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 0;
+  background: transparent;
+  color: $ink;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.workerAvatar {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  object-fit: cover;
+  background: $surface-alt;
+}
+
+.workerInfo {
+  min-width: 0;
+  flex: 1;
+}
+
+.workerName {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.workerMeta {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  color: $ink-soft;
+  font-size: 11px;
+  margin-bottom: 3px;
+}
+
+.workerStats {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: $ink-soft;
+  font-size: 11px;
+}
+
+.starRow {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.starFill {
+  color: $warn;
+  font-size: 12px;
+}
+
+.starEmpty {
+  color: $line;
+  font-size: 12px;
+}
+
+.ratingText {
+  margin-left: 2px;
+  font-weight: 600;
+  color: $ink;
+  font-size: 11px;
+}
+
+.dot {
+  color: $line;
+}
+
+.charge {
+  color: $accent;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.workerDetail {
+  padding: 0 14px 14px;
+  border-top: 1px solid $line;
+  padding-top: 10px;
+}
+
+.workerBio {
+  color: $ink-soft;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.workerDetailStats {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: $ink-soft;
+    font-size: 11px;
+  }
+}
+
+.viewProfileBtn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 6px;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  background: transparent;
+  color: $ink;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover {
+    background: $surface-alt;
+  }
+}
+
+.orderBtn {
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  border-radius: $radius-sm;
+  background: $accent;
+  color: $on-accent;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:active {
+    opacity: 0.8;
+  }
+}

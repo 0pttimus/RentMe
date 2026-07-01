@@ -1,0 +1,289 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  padding-bottom: 32px;
+}
+
+.tabs {
+  display: flex;
+  margin: 16px 16px 0;
+  border-radius: 12px;
+  background: $canvas;
+  padding: 3px;
+}
+
+.tab {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: $ink-soft;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tabActive {
+  background: $surface;
+  color: $ink;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.form {
+  margin: 24px 16px 0;
+}
+
+.amountWrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 56px;
+  padding: 0 16px;
+  border: 1px solid $line;
+  border-radius: 12px;
+  background: $surface;
+}
+
+.currency {
+  font-size: 20px;
+  font-weight: 600;
+  color: $ink-soft;
+  flex-shrink: 0;
+}
+
+.currencyToggle {
+  font-size: 20px;
+  font-weight: 600;
+  color: $ink;
+  flex-shrink: 0;
+  border: none;
+  background: $canvas;
+  padding: 4px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  &:hover { background: $line; }
+  &::after { content: " \2195"; font-size: 12px; opacity: 0.5; }
+}
+
+.amountInput {
+  flex: 1;
+  border: none;
+  background: none;
+  font-size: 24px;
+  font-weight: 500;
+  color: $ink;
+  outline: none;
+}
+
+.rate {
+  margin-top: 6px;
+  font-size: 12px;
+  color: $ink-soft;
+}
+
+.fieldGroup {
+  margin-top: 16px;
+}
+
+.label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: $ink-soft;
+  margin-bottom: 4px;
+}
+
+.pickerBtn {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid $line;
+  border-radius: 10px;
+  background: $surface;
+  font-size: 15px;
+  color: $ink;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+  &:hover { border-color: $accent; }
+}
+
+.textInput {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid $line;
+  border-radius: 10px;
+  background: $surface;
+  font-size: 15px;
+  color: $ink;
+  outline: none;
+  &:focus { border-color: $accent; }
+}
+
+.resolving {
+  margin-top: 8px;
+  font-size: 12px;
+  color: $ink-soft;
+}
+
+.accountNameBox {
+  margin-top: 8px;
+  padding: 12px 14px;
+  border: 1px solid $line;
+  border-radius: 10px;
+  background: $surface;
+}
+
+.accountNameLabel {
+  font-size: 11px;
+  color: $ink-soft;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.accountNameValue {
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.submitBtn {
+  @include btn-primary;
+  margin-top: 24px;
+  height: 48px;
+  border-radius: $radius-lg;
+  font-size: 14px;
+  width: 100%;
+}
+
+.infoBox {
+  margin-top: 16px;
+  padding: 12px;
+  background: $canvas;
+  border-radius: 10px;
+  font-size: 12px;
+  color: $ink-soft;
+  line-height: 1.5;
+}
+
+.successCard {
+  margin: 24px 16px 0;
+  text-align: center;
+  padding: 32px 16px;
+}
+
+.successTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.successBody {
+  font-size: 13px;
+  color: $ink-soft;
+}
+
+// iOS-style bottom sheet bank picker
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  animation: scrim-in 0.25s ease;
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  background: $surface;
+  border-radius: 16px 16px 0 0;
+  padding: 8px 16px 32px;
+  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  animation: sheet-in 0.35s $ease-spring;
+}
+
+.sheetHandle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: $line;
+  margin: 0 auto 8px;
+}
+
+.sheetHeader {
+  margin-bottom: 8px;
+}
+
+.sheetTitle {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.sheetSearch {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid $line;
+  border-radius: 10px;
+  background: $canvas;
+  font-size: 14px;
+  color: $ink;
+  outline: none;
+  margin-bottom: 8px;
+  &:focus { border-color: $accent; }
+}
+
+.sheetList {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bankOption {
+  display: block;
+  width: 100%;
+  padding: 12px 0;
+  border: none;
+  background: none;
+  font-size: 14px;
+  color: $ink;
+  text-align: left;
+  cursor: pointer;
+  border-bottom: 1px solid $line;
+  transition: opacity 0.1s ease;
+  &:active { opacity: 0.5; }
+}
+
+.bankOptionActive {
+  color: $accent;
+  font-weight: 600;
+}
+
+.noBanks {
+  padding: 16px 0;
+  text-align: center;
+  font-size: 13px;
+  color: $ink-soft;
+}
+
+@keyframes scrim-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes sheet-in {
+  from { opacity: 0; transform: translateY(32px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

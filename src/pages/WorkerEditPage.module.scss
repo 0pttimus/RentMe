@@ -1,0 +1,303 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  @media (min-width: 769px) {
+    max-width: 500px;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-left: -8px;
+  border-radius: 999px;
+  color: $ink;
+  text-decoration: none;
+  transition: background 0.15s;
+
+  &:hover {
+    background: $surface-alt;
+  }
+}
+
+.heading {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.avatarSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 999px;
+  object-fit: cover;
+  background: $surface-alt;
+  box-shadow: $shadow-sm;
+}
+
+.changePhoto {
+  border: 0;
+  background: transparent;
+  color: $accent;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  padding-left: 2px;
+  color: $ink-soft;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  background: $surface;
+  color: $ink;
+  font-family: inherit;
+  font-size: 14px;
+  outline: 0;
+  transition: border-color 0.15s;
+
+  &:focus {
+    border-color: $accent;
+  }
+
+  &::placeholder {
+    color: $ink-faint;
+  }
+}
+
+.textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  background: $surface;
+  color: $ink;
+  font-family: inherit;
+  font-size: 14px;
+  outline: 0;
+  resize: vertical;
+  transition: border-color 0.15s;
+
+  &:focus {
+    border-color: $accent;
+  }
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  background: $surface-alt;
+}
+
+.seg,
+.segActive {
+  padding: 10px;
+  border: 0;
+  border-radius: $radius-xs;
+  background: transparent;
+  color: $ink-soft;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.segActive {
+  background: $surface;
+  color: $ink;
+  font-weight: 600;
+}
+
+.priceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.portfolioGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.portfolioItem {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: $radius-sm;
+  overflow: hidden;
+  background: $surface-alt;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.removeBtn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: flex;
+  width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+.addBtn {
+  display: flex;
+  min-height: 0;
+  aspect-ratio: 4 / 3;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed $line;
+  border-radius: $radius-sm;
+  background: transparent;
+  color: $ink-faint;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: $surface-alt;
+    color: $ink-soft;
+  }
+}
+
+.hint {
+  margin-top: 6px;
+  color: $danger;
+  font-size: 11px;
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 14px;
+  border-radius: $radius-md;
+  background: $surface;
+  box-shadow: $shadow-sm;
+}
+
+.toggleLabel {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.toggleHint {
+  margin-top: 2px;
+  color: $ink-soft;
+  font-size: 11px;
+}
+
+.toggle {
+  position: relative;
+  width: 48px;
+  height: 28px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: $line;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.toggleOn {
+  background: $accent;
+}
+
+.thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s ease;
+}
+
+.toggleOn .thumb {
+  transform: translateX(20px);
+}
+
+.saveBtn {
+  @include btn-primary;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.switchSection {
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid $line;
+  text-align: center;
+}
+
+.switchBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+  color: $ink-soft;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s;
+
+  &:hover {
+    color: $ink;
+  }
+}

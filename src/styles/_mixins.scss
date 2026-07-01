@@ -1,0 +1,105 @@
+@use "tokens" as *;
+
+@mixin card {
+  background: $surface;
+  border-radius: $radius-md;
+  box-shadow: $shadow-sm;
+}
+
+@mixin card-elevated {
+  background: $surface;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-md;
+}
+
+@mixin tap-scale {
+  transition: transform 0.15s $ease-spring;
+
+  &:active {
+    transform: scale($tap-scale);
+  }
+}
+
+@mixin btn-primary {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: $radius-md;
+  background: $accent;
+  color: $on-accent;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+
+  &:active:not(:disabled) {
+    opacity: 0.7;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+@mixin btn-ghost {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  border: 0;
+  border-radius: $radius-md;
+  background: transparent;
+  color: $accent;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+
+  &:active {
+    opacity: 0.5;
+  }
+}
+
+@mixin input-field {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid $line;
+  border-radius: $radius-md;
+  background: $surface;
+  color: $ink;
+  font-size: 15px;
+  font-family: inherit;
+  transition: border-color 0.15s;
+
+  &::placeholder {
+    color: $ink-faint;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $accent;
+  }
+}
+
+@mixin page-pad {
+  padding: 20px 16px 32px;
+}
+
+@mixin pill($bg, $fg) {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: $bg;
+  color: $fg;
+  font-size: 12px;
+  font-weight: 500;
+}

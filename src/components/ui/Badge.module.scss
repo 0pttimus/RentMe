@@ -1,0 +1,44 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/mixins" as *;
+
+.trust {
+  @include pill($line, $ink-soft);
+}
+
+.trustElite {
+  background: $verified-soft;
+  color: $verified;
+}
+
+.trustTrusted {
+  background: $trust-soft;
+  color: $trust;
+}
+
+.trustAverage {
+  background: $line;
+  color: $ink-soft;
+}
+
+.trustRisk {
+  background: $danger-soft;
+  color: $danger;
+}
+
+.verified {
+  @include pill($verified-soft, $verified);
+}
+
+.pill {
+  @include pill($surface-alt, $ink-soft);
+}
+
+.pillWarn {
+  background: $warn-soft;
+  color: $warn;
+}
+
+.pillNeutral {
+  background: $surface-alt;
+  color: $ink-soft;
+}

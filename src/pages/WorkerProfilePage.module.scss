@@ -1,0 +1,284 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  @media (min-width: 769px) {
+    max-width: 640px;
+  }
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-left: -8px;
+  margin-bottom: 4px;
+  border: 0;
+  background: transparent;
+  color: $accent;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:active {
+    opacity: 0.5;
+  }
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.idVerified {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: $verified-soft;
+  color: $verified;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+.realName {
+  margin-top: 4px;
+  color: $ink-faint;
+  font-size: 11px;
+}
+
+.header {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  object-fit: cover;
+  background: $surface-alt;
+  box-shadow: $shadow-sm;
+}
+
+.headerInfo {
+  min-width: 0;
+  flex: 1;
+  padding-top: 4px;
+}
+
+.name {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  margin-bottom: 4px;
+}
+
+.location,
+.chargeRow {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: $ink-soft;
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
+.badge {
+  margin-bottom: 16px;
+}
+
+.availTrue {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: $verified-soft;
+  color: $verified;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.availFalse {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: $danger-soft;
+  color: $danger;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 6px;
+  border-radius: $radius-md;
+  background: $surface;
+  box-shadow: $shadow-sm;
+
+  @media (max-width: 768px) {
+    border-radius: 0;
+  }
+}
+
+.statIcon {
+  color: $accent;
+  flex-shrink: 0;
+}
+
+.statValue {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.statLabel {
+  color: $ink-soft;
+  font-size: 10px;
+}
+
+.sectionTitle {
+  margin-bottom: 8px;
+  padding-left: 2px;
+  color: $ink-soft;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.categories {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.pill {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: $accent-soft;
+  color: $accent;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.bio {
+  margin-bottom: 20px;
+  color: $ink-soft;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.orderBtn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-top: 20px;
+  margin-bottom: 24px;
+  border: 0;
+  border-radius: $radius-md;
+  background: $accent;
+  color: $on-accent;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  text-decoration: none;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.review {
+  padding: 14px;
+  border-radius: $radius-md;
+  background: $surface;
+  box-shadow: $shadow-sm;
+
+  @media (max-width: 768px) {
+    border-radius: 0;
+    margin: 0 -16px;
+  }
+}
+
+.reviewHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.reviewAvatar {
+  display: flex;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: $accent-soft;
+  color: $accent;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.reviewName {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.reviewStars {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.starFilled {
+  color: $warn;
+  font-size: 13px;
+}
+
+.starEmpty {
+  color: $line;
+  font-size: 13px;
+}
+
+.reviewDate {
+  margin-left: 6px;
+  color: $ink-faint;
+  font-size: 10px;
+}
+
+.reviewText {
+  color: $ink-soft;
+  font-size: 12px;
+  line-height: 1.5;
+}

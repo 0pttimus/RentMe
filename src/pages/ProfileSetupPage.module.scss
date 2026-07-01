@@ -1,0 +1,48 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  padding: 32px 24px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.subtitle {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: $ink-soft;
+}
+
+.form {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.input {
+  @include input-field;
+  margin-top: 6px;
+}
+
+.error {
+  font-size: 14px;
+  color: $danger;
+}
+
+.submitBtn {
+  @include btn-primary;
+  margin-top: 8px;
+  height: 48px;
+  border-radius: $radius-lg;
+  font-size: 14px;
+}

@@ -1,0 +1,148 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  @media (min-width: 769px) {
+    max-width: 640px;
+  }
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-left: -8px;
+  margin-bottom: 4px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: $accent;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:active {
+    opacity: 0.5;
+  }
+}
+
+.hero {
+  margin-bottom: 12px;
+  border-radius: $radius-lg;
+  overflow: hidden;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.address {
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: $ink-soft;
+}
+
+.priceBlock {
+  margin-bottom: 12px;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.priceUnit {
+  font-size: 12px;
+  font-weight: 400;
+  color: $ink-soft;
+}
+
+.feeNote {
+  font-size: 11px;
+  color: $ink-faint;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.passport {
+  margin-bottom: 12px;
+  padding: 14px;
+}
+
+.passportTitle {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.passportList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: $ink-soft;
+}
+
+.passportRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.checkIcon {
+  color: $verified;
+}
+
+.landlord {
+  margin-bottom: 16px;
+  padding: 12px;
+}
+
+.landlordRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.landlordAvatar {
+  display: flex;
+  height: 34px;
+  width: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: $canvas;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.landlordInfo {
+  flex: 1;
+}
+
+.landlordName {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.landlordMeta {
+  font-size: 11px;
+  color: $ink-soft;
+}
+
+.reserveBtn {
+  @include btn-primary;
+  border-radius: $radius-lg;
+  font-size: 14px;
+  text-align: center;
+}

@@ -1,0 +1,96 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: $scrim;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  width: min(100%, 380px);
+  padding: 28px 24px 20px;
+  border-radius: $radius-xl;
+  background: $surface;
+  box-shadow: $shadow-lg;
+  text-align: center;
+  animation: slideUp 0.25s $ease-spring;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.iconWrap {
+  display: flex;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: $accent-soft;
+  color: $accent;
+}
+
+.heading {
+  margin-bottom: 8px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.body {
+  margin-bottom: 24px;
+  color: $ink-soft;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.confirmBtn {
+  @include btn-primary;
+}
+
+.cancelBtn {
+  display: inline-flex;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+  color: $ink-soft;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    color: $ink;
+  }
+}

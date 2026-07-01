@@ -1,0 +1,28 @@
+@use "../styles/tokens" as *;
+
+.input {
+  width: 100%;
+  height: 56px;
+  background: $surface-alt;
+  border: none;
+  border-radius: 12px;
+  text-align: center;
+  font-family: $font-mono;
+  font-size: 28px;
+  letter-spacing: 0.4em;
+  color: $ink;
+  outline: none;
+  transition: box-shadow 0.2s;
+
+  &::placeholder {
+    color: $ink-faint;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+  }
+
+  &:focus {
+    box-shadow: inset 0 0 0 2px $accent;
+  }
+}

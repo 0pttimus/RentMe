@@ -1,0 +1,228 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  @media (min-width: 769px) {
+    max-width: 640px;
+  }
+}
+
+.balanceCard {
+  margin-bottom: 20px;
+  padding: 24px;
+  text-align: center;
+  border: 1px solid $line;
+  background: $surface;
+  border-radius: $radius-md;
+}
+
+.balanceLabel {
+  margin-bottom: 4px;
+  font-size: 11px;
+  color: $ink-soft;
+}
+
+.balanceAmount {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 0;
+  border-radius: $radius-sm;
+  background: $surface;
+  border: 1px solid $line;
+  @include tap-scale;
+}
+
+.actionIcon {
+  display: flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: $accent-soft;
+  color: $accent;
+}
+
+.actionLabel {
+  font-size: 10px;
+  color: $ink-soft;
+}
+
+.sectionLabel {
+  margin-bottom: 8px;
+  font-size: 11px;
+  color: $ink-soft;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.activityRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: $radius-sm;
+  background: $surface;
+  border: 1px solid $line;
+}
+
+.activityLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.activityIcon {
+  color: $ink-faint;
+}
+
+.activityLabel {
+  font-size: 13px;
+}
+
+.amountOut {
+  font-size: 13px;
+  font-weight: 500;
+  color: $danger;
+}
+
+.amountIn {
+  font-size: 13px;
+  font-weight: 500;
+  color: $verified;
+}
+
+.emptyText {
+  padding: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: $ink-soft;
+}
+
+.txCard {
+  border-radius: $radius-sm;
+  background: $surface;
+  border: 1px solid $line;
+  overflow: hidden;
+}
+
+.txHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  @include tap-scale;
+}
+
+.txLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.txRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.txType {
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.txDate {
+  font-size: 11px;
+  color: $ink-soft;
+}
+
+.txAmtIn {
+  font-size: 14px;
+  font-weight: 600;
+  color: $verified;
+}
+
+.txAmtOut {
+  font-size: 14px;
+  font-weight: 600;
+  color: $danger;
+}
+
+.rotated {
+  transform: rotate(90deg);
+}
+
+.detail {
+  padding: 12px;
+  border-top: 1px solid $line;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 12px;
+  color: $ink-soft;
+
+  span:last-child {
+    color: $ink;
+    font-weight: 500;
+  }
+}
+
+.paid {
+  color: $verified !important;
+}
+
+.charge {
+  color: $danger !important;
+}
+
+.receiptBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  background: none;
+  color: $ink;
+  font-size: 12px;
+  cursor: pointer;
+  @include tap-scale;
+
+  &:hover {
+    background: $surface-alt;
+  }
+}

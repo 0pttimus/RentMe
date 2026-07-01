@@ -1,0 +1,176 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  @media (min-width: 769px) {
+    max-width: 640px;
+  }
+}
+
+.backBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 999px;
+  background: $surface;
+  color: $ink;
+  cursor: pointer;
+  @include tap-scale;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: $ink-soft;
+}
+
+.empty {
+  font-size: 13px;
+  color: $ink-faint;
+  padding: 16px 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.card {
+  border-radius: $radius-sm;
+  background: $surface;
+  border: 1px solid $line;
+  overflow: hidden;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  @include tap-scale;
+}
+
+.cardLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.initial {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: $accent-soft;
+  color: $accent;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.workerName {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.jobTitle {
+  font-size: 11px;
+  color: $ink-soft;
+}
+
+.cardRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.amount {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rotated {
+  transform: rotate(90deg);
+}
+
+.payBtn {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-top: 1px solid $line;
+  background: $accent;
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  @include tap-scale;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.detail {
+  padding: 12px;
+  border-top: 1px solid $line;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 12px;
+  color: $ink-soft;
+
+  span:last-child {
+    color: $ink;
+    font-weight: 500;
+  }
+}
+
+.paid {
+  color: $verified !important;
+}
+
+.receiptBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  background: none;
+  color: $ink;
+  font-size: 12px;
+  cursor: pointer;
+  @include tap-scale;
+
+  &:hover {
+    background: $surface-alt;
+  }
+}
