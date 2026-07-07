@@ -1,9 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
-import { Store, LayoutDashboard, Wallet, Wrench } from "lucide-react";
+import { Store, LayoutDashboard, Wallet, Wrench, Bookmark } from "lucide-react";
 import styles from "./BottomNav.module.scss";
 
 const tabs = [
   { href: "/markets", label: "Markets", icon: Store },
+  { href: "/saved", label: "Saved", icon: Bookmark },
   { href: "/portal", label: "Portal", icon: LayoutDashboard },
   { href: "/wallet", label: "Wallet", icon: Wallet },
   { href: "/hire", label: "Hire", icon: Wrench },

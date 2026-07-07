@@ -17,8 +17,7 @@ export default function SidebarNav() {
     ? user.fullName.split(" ").map((n) => n[0]).join("")
     : "G";
 
-  const stored = typeof localStorage !== "undefined" ? localStorage.getItem("rentme_profile_extras") : null;
-  const avatarUrl: string | undefined = stored ? (JSON.parse(stored).avatarUrl ?? undefined) : undefined;
+  const avatarUrl = user?.avatarUrl ?? undefined;
 
   return (
     <nav className={styles.sidebar}>

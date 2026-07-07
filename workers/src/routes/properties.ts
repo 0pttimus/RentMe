@@ -1,4 +1,5 @@
-import { getProperty, listProperties } from "../lib/properties";
+import { getProperty, listProperties, listMyProperties } from "../lib/properties";
+import { requireUser } from "../lib/auth";
 import type { Env } from "./auth";
 
 function json(data: unknown, status = 200) {
@@ -8,13 +9,26 @@ function json(data: unknown, status = 200) {
   });
 }
 
+export async function handleListMyProperties(
+  request: Request,
+  env: Env
+): Promise<Response> {
+  const user = await requireUser(request, env.DB);
+  if (user instanceof Response) return user;
+
+  const properties = await listMyProperties(env.DB, user.id);
+  return json({ properties });
+}
+
 export async function handleListProperties(
   request: Request,
   env: Env
 ): Promise<Response> {
   const url = new URL(request.url);
   const city = url.searchParams.get("city") ?? undefined;
-  const properties = await listProperties(env.DB, city);
+  const propertyTypes = url.searchParams.get("propertyTypes");
+  const types = propertyTypes ? propertyTypes.split(",") : undefined;
+  const properties = await listProperties(env.DB, city, types);
   return json({ properties });
 }
 

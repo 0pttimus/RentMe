@@ -3,7 +3,7 @@ import { ArrowDownRight, ArrowUpRight, Home, Briefcase, ChevronRight, Download }
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/Card";
 import { getWallet } from "@/lib/api/client";
-import { formatNaira } from "@/lib/format";
+import { formatNaira, formatStatus } from "@/lib/format";
 import { downloadReceiptImage } from "@/lib/receipt";
 import styles from "./WalletPage.module.scss";
 
@@ -21,6 +21,15 @@ interface Tx {
   created_at: string;
 }
 
+interface ReservationTx {
+  id: string;
+  property_id: string;
+  status: string;
+  deposit_amount_ngn: number;
+  created_at: string;
+  title: string;
+}
+
 function formatDate(ts: string) {
   return new Date(ts).toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" });
 }
@@ -29,34 +38,52 @@ function formatTime(ts: string) {
   return new Date(ts).toLocaleTimeString("en-NG", { hour: "2-digit", minute: "2-digit" });
 }
 
-function downloadReceipt(tx: Tx) {
+function downloadReceipt(_title: string, date: string, type: string, ref: string | null, amount: number) {
   downloadReceiptImage({
-    title: "Transaction Receipt",
-    subtitle: `RentMe \u00b7 ${formatDate(tx.created_at)}`,
+    title: _title,
+    subtitle: `RentMe \u00b7 ${formatDate(date)}`,
     rows: [
-      { label: "Type", value: tx.type.replace(/_/g, " ") },
-      { label: "Date", value: formatDate(tx.created_at) },
-      { label: "Time", value: formatTime(tx.created_at) },
-      { label: "Reference", value: tx.reference ?? "\u2014" },
-      { label: "Amount", value: `${tx.amount_ngn >= 0 ? "+" : ""}${formatNaira(tx.amount_ngn)}` },
+      { label: "Type", value: type.replace(/_/g, " ") },
+      { label: "Date", value: formatDate(date) },
+      { label: "Time", value: formatTime(date) },
+      { label: "Reference", value: ref ?? "\u2014" },
+      { label: "Amount", value: `${amount >= 0 ? "+" : ""}${formatNaira(amount)}` },
     ],
-    filename: `receipt-${tx.reference ?? tx.created_at}`,
+    filename: `receipt-${ref ?? date}`,
   });
 }
 
 export default function WalletPage() {
   const [balance, setBalance] = useState(0);
   const [txs, setTxs] = useState<Tx[]>([]);
+  const [reservations, setReservations] = useState<ReservationTx[]>([]);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
 
   useEffect(() => {
-    getWallet().then((res) => {
+    getWallet(0).then((res) => {
       if (res.data) {
         setBalance(res.data.balanceNgn);
         setTxs(res.data.transactions);
+        setReservations(res.data.reservations);
+        setHasMore(res.data.hasMore);
+        setOffset(20);
       }
     });
   }, []);
+
+  function loadMore() {
+    getWallet(offset).then((res) => {
+      const d = res.data;
+      if (d) {
+        setTxs((prev) => [...prev, ...d.transactions]);
+        setReservations((prev) => [...prev, ...d.reservations]);
+        setHasMore(!!d.hasMore);
+        setOffset((prev) => prev + 20);
+      }
+    });
+  }
 
   return (
     <div className={["page-content", styles.page].join(" ")}>
@@ -80,10 +107,10 @@ export default function WalletPage() {
         ))}
       </div>
 
-      <p className={styles.sectionLabel}>Recent activity</p>
+      <p className={styles.sectionLabel}>Wallet transactions</p>
       <div className={styles.activityList}>
         {txs.length === 0 ? (
-          <p className={styles.emptyText}>No activity yet.</p>
+          <p className={styles.emptyText}>No wallet activity yet.</p>
         ) : (
           txs.map((tx, i) => {
             const key = tx.reference ?? `${tx.created_at}-${i}`;
@@ -124,7 +151,7 @@ export default function WalletPage() {
                       <span>Status</span>
                       <span className={styles.paid}>Completed</span>
                     </div>
-                    <button className={styles.receiptBtn} onClick={() => downloadReceipt(tx)} type="button">
+                    <button className={styles.receiptBtn} onClick={() => downloadReceipt("Transaction Receipt", tx.created_at, tx.type, tx.reference, tx.amount_ngn)} type="button">
                       <Download size={14} strokeWidth={2} />
                       Download Receipt
                     </button>
@@ -133,6 +160,29 @@ export default function WalletPage() {
               </div>
             );
           })
+        )}
+      </div>
+
+      {hasMore && (
+        <button type="button" className={styles.loadMore} onClick={loadMore}>Load More</button>
+      )}
+
+      <p className={styles.sectionLabel}>Reservations</p>
+      <div className={styles.activityList}>
+        {reservations.length === 0 ? (
+          <p className={styles.emptyText}>No reservation activity.</p>
+        ) : (
+          reservations.map((r) => (
+            <Link to={`/property/${r.property_id}`} key={r.id} className={styles.txCard} style={{ display: "flex", padding: "12px", textDecoration: "none", color: "inherit" }}>
+              <div style={{ flex: 1 }}>
+                <p className={styles.txType}>{r.title}</p>
+                <p className={styles.txDate}>{formatStatus(r.status)} &middot; {formatDate(r.created_at)}</p>
+              </div>
+              <p className={r.deposit_amount_ngn > 0 ? styles.txAmtOut : styles.txAmtIn}>
+                {r.deposit_amount_ngn > 0 ? `-${formatNaira(r.deposit_amount_ngn)}` : "—"}
+              </p>
+            </Link>
+          ))
         )}
       </div>
     </div>

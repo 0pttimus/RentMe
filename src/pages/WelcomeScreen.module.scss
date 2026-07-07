@@ -1,148 +1,152 @@
-@use "../styles/tokens" as *;
+// Welcome screen stands outside the app shell so it owns its own palette.
+// These colours deliberately match the illustrated design mockup.
+$bg-top: #eef4f0;
+$bg: #e8f0eb;
+$green-dark: #1e6b47;
+$green-mid: #247a52;
+$green-btn: #1d6847;
+$text-dark: #1a1a1a;
+$text-subtle: #6b7c72;
+$white: #ffffff;
+$radius-pill: 16px;
 
 .page {
-  flex: 1;
+  position: relative;
   display: flex;
   flex-direction: column;
-  background: $surface;
-  min-height: 100%;
+  height: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, $bg-top 0%, $bg 60%, #8dc498 100%);
+  overflow: hidden;
 }
 
-.hero {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0 32px;
-  gap: 24px;
+// large faint circle top-right
+.bgCircle {
+  position: absolute;
+  top: -60px;
+  right: -80px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(#a8d4b4, 0.35);
+  pointer-events: none;
+  z-index: 0;
 }
 
-.art {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.artSvg {
-  width: 200px;
-  height: auto;
-}
-
-.houseBody {
-  fill: $surface-alt;
-  stroke: $line;
-  stroke-width: 1.5;
-}
-
-.roof {
-  fill: $accent;
-}
-
-.door {
-  fill: $ink-faint;
-}
-
-.window {
-  fill: $accent-soft;
-  stroke: $accent;
-  stroke-width: 1;
-}
-
-.windowAccent {
-  fill: $accent;
-}
-
-.chimney {
-  fill: $surface-alt;
-  stroke: $line;
-  stroke-width: 1.5;
-}
-
-.bubble {
-  fill: $accent-soft;
-}
-
-.bubbleSmall {
-  fill: $verified-soft;
-}
-
-.ground {
-  fill: $surface-alt;
-}
-
-.textBlock {
+// ---- TOP SECTION ----
+.top {
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  padding-top: clamp(56px, 11vh, 90px);
+  padding-bottom: 16px;
+  gap: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.appIcon {
+  width: 96px;
+  height: 96px;
+  border-radius: 22px;
+  box-shadow: 0 8px 28px rgba(#0d3d28, 0.45);
+  display: block;
+  object-fit: cover;
 }
 
 .title {
-  font-size: 42px;
+  font-size: 46px;
   font-weight: 800;
-  letter-spacing: -0.5px;
+  letter-spacing: -1px;
   line-height: 1;
   margin: 0;
 }
 
-.titleRent {
-  color: $ink;
-}
-
-.titleMe {
-  color: $accent;
-}
+.titleRent { color: $text-dark; }
+.titleMe   { color: $green-mid; }
 
 .subtitle {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 400;
-  color: $ink-soft;
+  color: $text-subtle;
   text-align: center;
-  line-height: 1.4;
+  line-height: 1.45;
   margin: 0;
 }
 
+// ---- ILLUSTRATION ----
+.illustration {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.illustrationImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 8%;
+  display: block;
+}
+
+// ---- FOOTER ----
 .footer {
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 24px;
-  padding-bottom: max(32px, env(safe-area-inset-bottom, 32px));
+  padding: 16px 24px;
+  padding-bottom: max(28px, env(safe-area-inset-bottom, 28px));
+  position: relative;
+  z-index: 2;
 }
 
 .createBtn {
   width: 100%;
-  height: 50px;
+  height: 56px;
   border: 0;
-  border-radius: $radius-md;
-  background: $accent;
-  color: $on-accent;
+  border-radius: $radius-pill;
+  background: linear-gradient(160deg, $green-mid 0%, $green-btn 100%);
+  color: $white;
   font-size: 17px;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: opacity 0.2s;
+  letter-spacing: 0.1px;
+  box-shadow: 0 4px 16px rgba(#1e6b47, 0.4);
+  transition: opacity 0.15s ease, transform 0.15s ease;
 
   &:active {
-    opacity: 0.85;
+    opacity: 0.88;
+    transform: scale(0.98);
   }
 }
 
 .signInBtn {
   width: 100%;
-  height: 50px;
+  height: 56px;
   border: 0;
-  border-radius: $radius-md;
-  background: $accent-soft;
-  color: $accent;
+  border-radius: $radius-pill;
+  background: $white;
+  color: $green-mid;
   font-size: 17px;
-  font-weight: 600;
+  font-weight: 700;
   font-family: inherit;
   cursor: pointer;
-  transition: opacity 0.2s;
+  letter-spacing: 0.1px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: opacity 0.15s ease, transform 0.15s ease;
 
   &:active {
-    opacity: 0.7;
+    opacity: 0.75;
+    transform: scale(0.98);
   }
 }
+

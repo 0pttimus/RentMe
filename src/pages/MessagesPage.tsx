@@ -1,10 +1,16 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Building2, Headphones, Send } from "lucide-react";
+import { Building2, Headphones, Send, ChevronRight } from "lucide-react";
 import { SubPageHeader } from "@/components/SubPageHeader";
+import { listConversations, sendMessage, getMessages } from "@/lib/api/client";
 import styles from "./MessagesPage.module.scss";
 
 type ThreadId = "landlord" | "support";
+
+type ConvItem = {
+  id: string; last_message: string | null; last_message_at: string | null;
+  created_at: string; other_id: string; other_name: string; other_avatar: string | null;
+};
 
 type ChatMessage = {
   from: "me" | "them";
@@ -12,129 +18,153 @@ type ChatMessage = {
   time: string;
 };
 
-const threadMeta: Record<ThreadId, { name: string; subtitle: string; icon: typeof Building2 }> = {
-  landlord: {
-    name: "Landlord",
-    subtitle: "Property owner",
-    icon: Building2,
-  },
-  support: {
-    name: "RentMe Support",
-    subtitle: "Reservations, repairs and account help",
-    icon: Headphones,
-  },
-};
-
-const initialMessages: Record<ThreadId, ChatMessage[]> = {
-  landlord: [],
-  support: [
-    { from: "them", text: "Hi there! RentMe Support here. How can we help?", time: "Now" },
-  ],
-};
-
-function readThread(value: string | null): ThreadId {
-  return value === "support" ? "support" : "landlord";
-}
+const supportMessages: ChatMessage[] = [
+  { from: "them", text: "Hi there! RentMe Support here. How can we help?", time: "Now" },
+];
 
 export default function MessagesPage() {
   const [searchParams] = useSearchParams();
   const activeThread = readThread(searchParams.get("thread"));
-  const [messages, setMessages] = useState(initialMessages);
+  const [conversations, setConversations] = useState<ConvItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [convMessages, setConvMessages] = useState<ChatMessage[]>([]);
+  const [activeConv, setActiveConv] = useState<string | null>(null);
   const [input, setInput] = useState("");
 
-  const meta = threadMeta[activeThread];
-  const Icon = meta.icon;
-  const activeMessages = messages[activeThread];
+  useEffect(() => {
+    if (activeThread !== "landlord") return;
+    setLoading(true);
+    listConversations().then((r: { data?: { conversations?: ConvItem[] } }) => {
+      if (r.data?.conversations) setConversations(r.data.conversations);
+      setLoading(false);
+    });
+  }, [activeThread]);
 
-  const preview = useMemo(
-    () => ({
-      landlord: messages.landlord.at(-1)?.text ?? "No messages yet",
-      support: messages.support.at(-1)?.text ?? "No messages yet",
-    }),
-    [messages]
-  );
+  const openConv = async (convId: string) => {
+    setActiveConv(convId);
+    const r = await getMessages(convId);
+    if (r.data?.messages) {
+      setConvMessages(r.data.messages.map((m) => ({
+        from: m.sender_id === "me" ? "me" as const : "them" as const,
+        text: m.content,
+        time: new Date(m.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      })));
+    }
+  };
 
-  function sendMessage() {
+  const activeConvMeta = activeConv
+    ? conversations.find((c: ConvItem) => c.id === activeConv)
+    : null;
+
+  const preview = useMemo(() => ({
+    landlord: conversations[0]?.last_message ?? "No messages yet",
+    support: supportMessages.at(-1)?.text ?? "No messages yet",
+  }), [conversations]);
+
+  async function handleSend() {
     const text = input.trim();
-    if (!text) return;
-    setMessages((current) => ({
-      ...current,
-      [activeThread]: [...current[activeThread], { from: "me", text, time: "Now" }],
-    }));
-    setInput("");
+    if (!text || !activeConv) return;
+    const r = await sendMessage(activeConv, text);
+    if (r.data) {
+      setConvMessages((prev) => [...prev, { from: "me", text, time: "Now" }]);
+      setInput("");
+    }
   }
 
   return (
     <div className={["page-content", styles.page].join(" ")}>
-      <SubPageHeader title="Messages" subtitle={meta.subtitle} prevTitle="Portal" backHref="/portal" />
+      <SubPageHeader title="Messages" subtitle={activeConvMeta ? activeConvMeta.other_name : activeThread === "support" ? "RentMe Support" : "Property conversations"} prevTitle="Portal" backHref="/portal" />
 
       <div className={styles.threadTabs}>
-        {(["landlord", "support"] as ThreadId[]).map((thread) => {
-          const TabIcon = threadMeta[thread].icon;
-          return (
-            <Link
-              key={thread}
-              to={`/messages?thread=${thread}`}
-              className={[styles.threadTab, activeThread === thread ? styles.threadTabActive : ""]
-                .filter(Boolean)
-                .join(" ")}
-            >
-              <span className={styles.threadIcon}>
-                <TabIcon size={14} strokeWidth={1.9} />
-              </span>
-              <span className={styles.threadText}>
-                <strong>{threadMeta[thread].name}</strong>
-                <span>{preview[thread]}</span>
-              </span>
-            </Link>
-          );
-        })}
+        {(["landlord", "support"] as ThreadId[]).map((thread) => (
+          <Link
+            key={thread}
+            to={`/messages?thread=${thread}`}
+            onClick={() => setActiveConv(null)}
+            className={[styles.threadTab, activeThread === thread ? styles.threadTabActive : ""].filter(Boolean).join(" ")}
+          >
+            <span className={styles.threadIcon}>
+              {thread === "landlord" ? <Building2 size={14} strokeWidth={1.9} /> : <Headphones size={14} strokeWidth={1.9} />}
+            </span>
+            <span className={styles.threadText}>
+              <strong>{thread === "landlord" ? "Landlord" : "Support"}</strong>
+              <span>{preview[thread]}</span>
+            </span>
+          </Link>
+        ))}
       </div>
 
-      <div className={styles.chatHeader}>
-        <div className={styles.avatar}>
-          <Icon size={18} strokeWidth={1.8} />
-        </div>
-        <div>
-          <p>{meta.name}</p>
-          <span>{meta.subtitle}</span>
-        </div>
-      </div>
-
-      <div className={[styles.messages, "ios-scroll"].join(" ")}>
-        {activeMessages.length === 0 ? (
-          <div className={styles.emptyChat}>
-            <p className={styles.emptyTitle}>No messages yet</p>
-            <p className={styles.emptyText}>Send a message to get the conversation started.</p>
+      {activeThread === "support" ? (
+        <>
+          <div className={styles.chatHeader}>
+            <div className={styles.avatar}><Headphones size={18} strokeWidth={1.8} /></div>
+            <div><p>RentMe Support</p><span>Reservations, repairs and account help</span></div>
           </div>
-        ) : (
-          activeMessages.map((message, index) => (
-            <div
-              key={`${message.time}-${index}`}
-              className={[styles.bubble, message.from === "me" ? styles.bubbleMe : styles.bubbleThem]
-                .filter(Boolean)
-                .join(" ")}
-            >
-              <p>{message.text}</p>
-              <span>{message.time}</span>
+          <div className={[styles.messages, "ios-scroll"].join(" ")}>
+            {supportMessages.map((msg, i) => (
+              <div key={i} className={[styles.bubble, msg.from === "me" ? styles.bubbleMe : styles.bubbleThem].filter(Boolean).join(" ")}>
+                <p>{msg.text}</p><span>{msg.time}</span>
+              </div>
+            ))}
+          </div>
+          <div className={styles.inputBar}>
+            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") handleSend(); }} placeholder="Message RentMe..." />
+            <button type="button" aria-label="Send" onClick={handleSend}><Send size={16} strokeWidth={2} /></button>
+          </div>
+        </>
+      ) : activeConv ? (
+        <>
+          <div className={styles.chatHeader}>
+            <div className={styles.avatar}>{activeConvMeta?.other_name?.[0] ?? "?"}</div>
+            <div><p>{activeConvMeta?.other_name ?? "Chat"}</p><span>Landlord</span></div>
+          </div>
+          <div className={[styles.messages, "ios-scroll"].join(" ")}>
+            <button className={styles.backToConversations} onClick={() => setActiveConv(null)} type="button">← All conversations</button>
+            {convMessages.length === 0 ? (
+              <div className={styles.emptyChat}>
+                <p className={styles.emptyTitle}>No messages yet</p>
+                <p className={styles.emptyText}>Send a message to get the conversation started.</p>
+              </div>
+            ) : (
+              convMessages.map((msg, i) => (
+                <div key={i} className={[styles.bubble, msg.from === "me" ? styles.bubbleMe : styles.bubbleThem].filter(Boolean).join(" ")}>
+                  <p>{msg.text}</p><span>{msg.time}</span>
+                </div>
+              ))
+            )}
+          </div>
+          <div className={styles.inputBar}>
+            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") handleSend(); }} placeholder="Message..." />
+            <button type="button" aria-label="Send" onClick={handleSend}><Send size={16} strokeWidth={2} /></button>
+          </div>
+        </>
+      ) : (
+        <div className={styles.conversationList}>
+          {loading ? (
+            <div className="spinnerWrap"><div className="spinner" /></div>
+          ) : conversations.length === 0 ? (
+            <div className={styles.emptyChat}>
+              <p className={styles.emptyTitle}>No conversations yet</p>
+              <p className={styles.emptyText}>Reserve a property to start chatting with the landlord.</p>
             </div>
-          ))
-        )}
-      </div>
-
-      <div className={styles.inputBar}>
-        <input
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") sendMessage();
-          }}
-          placeholder={activeThread === "support" ? "Message RentMe..." : "Message landlord..."}
-        />
-        <button type="button" aria-label="Send message" onClick={sendMessage}>
-          <Send size={16} strokeWidth={2} />
-        </button>
-      </div>
+          ) : (
+            conversations.map((c: ConvItem) => (
+              <button key={c.id} className={styles.convRow} onClick={() => openConv(c.id)} type="button">
+                <div className={styles.avatar}>{c.other_name?.[0] ?? "?"}</div>
+                <div className={styles.convInfo}>
+                  <p className={styles.convName}>{c.other_name}</p>
+                  <p className={styles.convPreview}>{c.last_message ?? "Start chatting"}</p>
+                </div>
+                <ChevronRight size={16} className={styles.convChevron} />
+              </button>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
+}
+
+function readThread(value: string | null): ThreadId {
+  return value === "support" ? "support" : "landlord";
 }

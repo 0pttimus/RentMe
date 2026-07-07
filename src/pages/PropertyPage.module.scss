@@ -124,6 +124,14 @@
   background: $canvas;
   font-size: 12px;
   font-weight: 500;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.landlordAvatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .landlordInfo {
@@ -140,9 +148,289 @@
   color: $ink-soft;
 }
 
+.loading {
+  color: $ink-soft;
+  font-size: 14px;
+  text-align: center;
+  padding: 60px 0;
+}
+
+.heroPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background: $surface-alt;
+  color: $ink-faint;
+  font-size: 14px;
+  border-radius: $radius-lg;
+}
+
+.section {
+  margin-bottom: 16px;
+}
+
+.sectionTitle {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: $ink-soft;
+}
+
 .reserveBtn {
   @include btn-primary;
   border-radius: $radius-lg;
   font-size: 14px;
+  text-align: center;
+}
+
+.reservedBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reservedLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px;
+  border-radius: $radius-lg;
+  background: $warn-soft;
+  color: $warn;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.alertBtn {
+  @include btn-primary;
+  border-radius: $radius-lg;
+  font-size: 14px;
+  text-align: center;
+  background: $surface-alt;
+  color: $ink;
+  border: 1px solid $line;
+
+  &:active {
+    background: $line;
+  }
+}
+
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.titleActions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid $line;
+  border-radius: 50%;
+  background: $surface;
+  color: $ink;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:active {
+    background: $surface-alt;
+  }
+}
+
+.priceHistorySection {
+  margin-bottom: 16px;
+}
+
+.priceHistoryToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid $line;
+  border-radius: 999px;
+  background: $surface;
+  color: $ink-soft;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+
+  svg:last-child {
+    transition: transform 0.2s;
+  }
+}
+
+.chevronUp {
+  transform: rotate(90deg);
+}
+
+.priceHistoryList {
+  margin-top: 8px;
+  padding: 8px;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  background: $surface-alt;
+}
+
+.priceHistoryRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 4px;
+  font-size: 12px;
+
+  & + & {
+    border-top: 1px solid $line;
+  }
+}
+
+.priceNote {
+  font-size: 12px;
+  color: $ink-faint;
+  margin: 2px 0 0;
+}
+
+.periodPicker {
+  margin-bottom: 16px;
+}
+
+.periodPickerToggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid $line;
+  border-radius: $radius-md;
+  background: $surface;
+  color: $ink-soft;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+
+  strong {
+    color: $ink;
+    margin-left: 4px;
+  }
+
+  svg:last-child {
+    margin-left: auto;
+    transition: transform 0.2s;
+  }
+}
+
+.chevronRight {
+  transform: rotate(180deg);
+}
+
+.chevronDown {
+  transform: rotate(270deg);
+}
+
+.periodPickerDropdown {
+  margin-top: 4px;
+  border: 1px solid $line;
+  border-radius: $radius-md;
+  background: $surface;
+  overflow: hidden;
+}
+
+.periodOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  background: transparent;
+  color: $ink;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+
+  & + & {
+    border-top: 1px solid $line;
+  }
+
+  span:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &:active {
+    background: $surface-alt;
+  }
+}
+
+.periodOptionActive {
+  background: $accent-soft;
+  color: $accent;
+  font-weight: 600;
+}
+
+.periodOptionLabel {
+  font-size: 14px;
+}
+
+.periodOptionPrice {
+  font-size: 12px;
+  color: $ink-faint;
+  font-weight: 400;
+}
+
+.periodCheck {
+  flex-shrink: 0;
+  color: $accent;
+}
+
+.durationRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.durationBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid $line;
+  border-radius: 50%;
+  background: $surface;
+  color: $ink;
+  font-size: 18px;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:active { background: $surface-alt; }
+  &:disabled { opacity: 0.3; }
+}
+
+.durationValue {
+  font-size: 16px;
+  font-weight: 600;
+  min-width: 100px;
   text-align: center;
 }

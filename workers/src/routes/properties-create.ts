@@ -1,6 +1,7 @@
 import { requireUser } from "../lib/auth";
 import { generatePassportNumber, createUnit } from "../lib/passport";
 import { getStateCode } from "../lib/state-codes";
+import { generateId } from "../lib/session";
 import type { Env } from "./auth";
 
 function json(data: unknown, status = 200) {
@@ -35,6 +36,9 @@ export async function handleCreateProperty(request: Request, env: Env) {
     unitIdentifier?: string;
     unitType?: string;
     existingPassportId?: string;
+    photos?: string[];
+    rentPeriod?: string;
+    rentDuration?: number;
   };
 
   if (!body.title || !body.street || !body.city || !body.rentAmountNgn) {
@@ -98,8 +102,8 @@ export async function handleCreateProperty(request: Request, env: Env) {
     `INSERT INTO properties (
       id, property_passport_id, property_unit_id, landlord_id, title, description,
       address, city, state, latitude, longitude, bedrooms, bathrooms, property_type,
-      amenities, rent_amount_ngn, status, is_verified
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending_verification', 0)`
+      amenities, photos, rent_amount_ngn, rent_period, rent_duration, status, is_verified
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending_verification', 1)`
   ).bind(
     propertyId,
     passportId,
@@ -116,8 +120,18 @@ export async function handleCreateProperty(request: Request, env: Env) {
     body.bathrooms ?? 1,
     body.propertyType ?? "apartment",
     JSON.stringify(body.amenities ?? []),
-    body.rentAmountNgn
+    JSON.stringify(body.photos ?? []),
+    body.rentAmountNgn,
+    body.rentPeriod ?? "yearly",
+    body.rentDuration ?? null
   ).run();
+
+  // log initial price
+  const historyId = generateId();
+  await env.DB
+    .prepare(`INSERT INTO price_history (id, property_id, price) VALUES (?, ?, ?)`)
+    .bind(historyId, propertyId, body.rentAmountNgn)
+    .run();
 
   return json({ success: true, propertyId, passportId });
 }

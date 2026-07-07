@@ -24,6 +24,21 @@ export type RentalCategory = {
   priceLabel: string;
   filters: FilterConfig[];
   roleLabels: RoleLabels;
+  propertyTypes?: string[];
+};
+
+export const CATEGORY_PROPERTY_TYPES: Record<string, string[]> = {
+  houses: ["apartment", "duplex", "bungalow", "self_contain", "studio", "penthouse"],
+  trucks: ["car", "pickup", "lorry", "truck", "bus", "heavy_duty"],
+  cameras: ["dslr", "video_camera", "drone", "lighting", "microphone", "studio_equipment"],
+  tents: ["tent", "canopy", "furniture"],
+  halls: ["event_hall", "banquet_hall", "conference_room"],
+  warehouses: ["warehouse", "storage"],
+  shops: ["shop", "retail", "storefront"],
+  office: ["office", "coworking", "executive_suite"],
+  land: ["land", "plot"],
+  construction: ["scaffolding", "mixer", "block_moulder", "compactor", "generator", "vibrator", "pump"],
+  boats: ["speed_boat", "yacht", "jet_ski", "kayak", "fishing_boat"],
 };
 
 export const rentalCategories: RentalCategory[] = [

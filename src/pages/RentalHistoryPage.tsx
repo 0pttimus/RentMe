@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/Card";
 import { VerifiedBadge } from "@/components/ui/Badge";
 import { SubPageHeader } from "@/components/SubPageHeader";
-import { formatNaira } from "@/lib/format";
+import { formatNaira, formatStatus } from "@/lib/format";
 import styles from "./RentalHistoryPage.module.scss";
 
 const history = [
@@ -30,7 +30,7 @@ export default function RentalHistoryPage() {
               <VerifiedBadge />
             </div>
             <div className={styles.itemFooter}>
-              <span className={styles.itemStatus}>{item.status}</span>
+              <span className={styles.itemStatus}>{formatStatus(item.status)}</span>
               <span className={styles.itemRent}>{formatNaira(item.rent)}/yr</span>
             </div>
           </Card>

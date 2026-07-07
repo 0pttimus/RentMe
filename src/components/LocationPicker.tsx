@@ -1,23 +1,37 @@
 import { useMemo, useState } from "react";
 import { ChevronLeft, MapPin, Search } from "lucide-react";
-const buildLocationIndex = (_slug?: string) => [] as { state: string; total: number; areas: { name: string; count: number }[] }[];
+import { nigeriaLocations } from "@/lib/nigeria-locations";
 import styles from "./LocationPicker.module.scss";
 
 type View = "states" | "areas";
 
+type LocationItem = { state: string; area: string | null; location: string };
+
 type Props = {
-  categorySlug?: string;
+  items: LocationItem[];
   selected: string | null; // "state" or "state::area"
   onSelect: (value: string | null) => void; // null to clear, "state" for all, "state::area" for specific
   onClose: () => void;
 };
 
-export default function LocationPicker({ categorySlug, selected, onSelect, onClose }: Props) {
+export default function LocationPicker({ items, selected, onSelect, onClose }: Props) {
   const [view, setView] = useState<View>("states");
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [query, setQuery] = useState("");
 
-  const index = useMemo(() => buildLocationIndex(categorySlug), [categorySlug]);
+  const index = useMemo(() => {
+    return nigeriaLocations.map((loc) => {
+      const matching = items.filter((i) => i.state === loc.state);
+      return {
+        state: loc.state,
+        total: matching.length,
+        areas: loc.areas.map((area) => ({
+          name: area,
+          count: matching.filter((i) => i.area === area || i.location === area).length,
+        })),
+      };
+    });
+  }, [items]);
 
   const withListings = index.filter((s) => s.total > 0);
   const withoutListings = index.filter((s) => s.total === 0);

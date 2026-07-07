@@ -18,6 +18,7 @@ import {
   verifyOtp,
 } from "../lib/otp";
 import { sendOtpEmail } from "../lib/resend";
+import { sendPushNotification } from "../lib/push";
 import {
   buildClearSessionCookie,
   buildSessionCookie,
@@ -159,6 +160,7 @@ export async function handleCompleteProfile(
     "If you ever need help, visit the Help page from your profile.",
     "info"
   ).run();
+  sendPushNotification(auth.id, "Welcome to RentMe", "Welcome to RentMe! Your account is all set up.", env);
 
   return json({ success: true, user });
 }
@@ -177,6 +179,21 @@ export async function handleMe(request: Request, env: Env): Promise<Response> {
   }
 
   return json({ user });
+}
+
+export async function handleUploadAvatar(request: Request, env: Env): Promise<Response> {
+  const auth = await requireUser(request, env.DB);
+  if (auth instanceof Response) return auth;
+
+  const body = (await request.json()) as { avatarUrl?: string };
+  const avatarUrl = body.avatarUrl?.trim();
+  if (!avatarUrl) return json({ error: "avatarUrl is required." }, 400);
+
+  await env.DB.prepare(
+    `UPDATE users SET avatar_url = ?, updated_at = datetime('now') WHERE id = ?`
+  ).bind(avatarUrl, auth.id).run();
+
+  return json({ success: true, avatarUrl });
 }
 
 export async function handleLogout(request: Request, env: Env): Promise<Response> {

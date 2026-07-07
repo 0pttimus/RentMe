@@ -2,162 +2,237 @@
 @use "../styles/mixins" as *;
 
 .page {
-  @include page-pad;
-}
-
-.steps {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  min-height: calc(100vh - 120px);
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  flex: 1;
+  padding: 32px 16px;
+  text-align: center;
+}
+
+.iconCircle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $accent-soft;
+  color: $accent;
+  margin-bottom: 16px;
+}
+
+.iconPending {
+  background: $warn-soft;
+  color: $warn;
+}
+
+.iconSuccess {
+  background: rgba(#22c55e, 0.15);
+  color: #22c55e;
+}
+
+.iconDanger {
+  background: $danger-soft;
+  color: $danger;
+}
+
+.heading {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: 700;
+  color: $accent;
+  margin: 0 0 16px;
+}
+
+.copy {
+  font-size: 14px;
+  line-height: 1.5;
+  color: $ink-soft;
+  margin: 0 0 20px;
+  max-width: 320px;
+}
+
+.statusBadge {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: $warn-soft;
+  color: $warn;
+  font-size: 12px;
+  font-weight: 600;
   margin-bottom: 20px;
-}
-
-.stepDone {
-  @include pill($verified-soft, $verified);
-}
-
-.stepActive {
-  @include pill($trust-soft, $trust);
-}
-
-.stepPending {
-  @include pill($canvas, $ink-faint);
-}
-
-.stepArrow {
-  color: $ink-faint;
 }
 
 .countdown {
+  font-family: $font-mono;
+  font-size: 32px;
+  font-weight: 600;
+  color: $accent;
   margin-bottom: 20px;
+  padding: 12px 24px;
+  border-radius: $radius-md;
+  background: $surface-alt;
+}
+
+.error {
+  padding: 10px 14px;
+  margin: 0 16px 16px;
+  border-radius: $radius-sm;
+  background: $danger-soft;
+  color: $danger;
+  font-size: 13px;
   text-align: center;
 }
 
-.countdownLabel {
-  margin-bottom: 4px;
-  font-size: 11px;
-  color: $ink-soft;
-}
-
-.countdownValue {
-  font-family: $font-mono;
-  font-size: 30px;
-  font-weight: 500;
-}
-
-.propertyCard {
-  margin-bottom: 20px;
-  padding: 12px;
-}
-
-.propertyRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.propertyTitle {
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.propertyPrice {
-  font-size: 11px;
-  color: $ink-soft;
-}
-
-.propertyThumb {
-  display: flex;
-  height: 34px;
-  width: 34px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  background: $canvas;
-}
-
-.thumbIcon {
-  color: $ink-faint;
-}
-
-.acceptBtn {
+.primaryBtn {
   @include btn-primary;
-  margin-bottom: 10px;
+  width: 100%;
+  max-width: 320px;
+  height: 48px;
   border-radius: $radius-lg;
   font-size: 14px;
-  text-align: center;
+  margin-bottom: 10px;
 }
 
-.reportBtn {
+.ghostBtn {
+  @include btn-ghost;
+  font-size: 13px;
+}
+
+.dangerBtn {
   display: flex;
-  width: 100%;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 14px;
-  border: 1px solid $line;
+  width: 100%;
+  max-width: 320px;
+  height: 44px;
+  border: 1.5px solid $danger;
   border-radius: $radius-lg;
-  background: $surface;
-  font-size: 14px;
+  background: transparent;
   color: $danger;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
-  transition: background 0.15s ease;
 
-  &:hover {
+  &:active {
     background: $danger-soft;
   }
-}
 
-.reportSheet {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.reportCopy {
-  color: $ink-soft;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  color: $ink-soft;
-  font-size: 12px;
-  font-weight: 600;
-
-  select {
-    @include input-field;
-    appearance: none;
-    color: $ink;
-    font-weight: 500;
+  &:disabled {
+    opacity: 0.5;
   }
 }
 
-.reportStatus {
-  padding: 10px 12px;
-  border-radius: $radius-sm;
-  background: $canvas;
-  color: $ink-soft;
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.sheetActions {
+.loadingWrap {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
 }
 
-.submitReportBtn {
-  @include btn-primary;
-  @include tap-scale;
+.iosSpinner {
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid $line;
+  border-top-color: $ink;
+  border-radius: 50%;
+  animation: iosSpin 0.7s linear infinite;
 }
 
-.cancelReportBtn {
-  @include btn-ghost;
-  @include tap-scale;
+@keyframes iosSpin {
+  to { transform: rotate(360deg); }
+}
+
+.txLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: $accent;
+  text-decoration: none;
+  margin-bottom: 16px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.statusText {
+  font-size: 14px;
+  color: $ink-soft;
+  margin-bottom: 16px;
+}
+
+.propertyCard {
+  margin: 0 16px 16px;
+  overflow: hidden;
+}
+
+.propertyImage {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.propertyBody {
+  padding: 16px;
+
+  .heading {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .price {
+    font-size: 15px;
+    margin-bottom: 0;
+  }
+}
+
+.mapLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: $accent;
+  text-decoration: none;
+  margin-bottom: 8px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.countdownCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 16px 16px;
+  padding: 12px;
+  border-radius: $radius-md;
+  background: $surface-alt;
+  color: $accent;
+  font-family: $font-mono;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.countdownUrgent {
+  background: $danger-soft;
+  color: $danger;
 }

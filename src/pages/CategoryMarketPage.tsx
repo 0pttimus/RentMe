@@ -1,8 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useParams, useNavigate } from "react-router-dom";
 import { ChevronLeft, MapPin, SlidersHorizontal, ShieldCheck } from "lucide-react";
-import { getCategory, type RentalCategory } from "@/lib/market-categories";
-interface RentalItem { id: string; category: string; title: string; images: string[]; location: string; state: string; price: number; priceLabel: string; verified: boolean; specs: Record<string, string>; provider: { initials: string; name: string } }
+import { getCategory, CATEGORY_PROPERTY_TYPES, type RentalCategory } from "@/lib/market-categories";
+import { getProperties, getMyReservations } from "@/lib/api/client";
+interface RentalItem { id: string; category: string; title: string; images: string[]; location: string; area: string | null; state: string; price: number; priceLabel: string; verified: boolean; rentPeriod: string; specs: Record<string, string>; provider: { initials: string; name: string; avatar: string | null }; verificationCount: number; landlordId: string; rejectedByLandlord: boolean }
 import LocationPicker from "@/components/LocationPicker";
 import styles from "./CategoryMarketPage.module.scss";
 
@@ -18,10 +19,50 @@ export default function CategoryMarketPage() {
   const [locationPickerOpen, setLocationPickerOpen] = useState(false);
 
   const [filterState, setFilterState] = useState<Record<string, string>>({});
+  const [items, setItems] = useState<RentalItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    const matchingTypes = CATEGORY_PROPERTY_TYPES[slug ?? ""] ?? [];
+    Promise.all([
+      getProperties(matchingTypes),
+      getMyReservations().catch(() => ({ data: null })),
+    ]).then(([propRes, reservRes]) => {
+      if (!propRes.data?.properties) return;
+      const rejectedLandlords = new Set(
+        (reservRes?.data?.reservations ?? [])
+          .filter((r: any) => r.status === "rejected" && r.landlord_id)
+          .map((r: any) => r.landlord_id)
+      );
+      const mapped: RentalItem[] = propRes.data.properties
+        .map((p: any) => ({
+          id: p.id,
+          category: p.propertyType,
+          title: p.title,
+          images: p.photos ?? [],
+          location: p.area || p.city,
+          area: p.area,
+          state: p.state,
+          price: p.rentAmountNgn,
+          priceLabel: category?.priceLabel ?? "",
+          rentPeriod: p.rentPeriod ?? "yearly",
+          verified: p.isVerified === 1,
+          verificationCount: p.verificationCount ?? 0,
+          specs: {
+            bedrooms: String(p.bedrooms),
+            bathrooms: String(p.bathrooms),
+          },
+          provider: { initials: p.landlordInitials, name: p.landlordName, avatar: p.landlordAvatar ?? null },
+          landlordId: p.landlordId,
+          rejectedByLandlord: rejectedLandlords.has(p.landlordId),
+        }));
+      setItems(mapped);
+      setLoading(false);
+    });
+  }, [slug]);
 
   if (!category) return <Navigate to="/markets" replace />;
-
-  const items: RentalItem[] = [];
 
   const setFilter = (key: string, value: string) => {
     setFilterState((prev) => ({ ...prev, [key]: value === "Any" ? "" : value }));
@@ -82,7 +123,7 @@ export default function CategoryMarketPage() {
             <span className={styles.headingEmoji}>{category.emoji}</span>
             {category.name}
           </h1>
-          <p className={styles.sub}>{filtered.length} of {items.length} items</p>
+          <p className={styles.sub}>{!loading && `${filtered.length} of ${items.length} items`}</p>
         </div>
       </div>
 
@@ -151,20 +192,33 @@ export default function CategoryMarketPage() {
       )}
 
       <div className={styles.list}>
-        {filtered.map((item) => (
-          <RentalCard key={item.id} item={item} category={category} />
-        ))}
-        {filtered.length === 0 && (
+        {loading ? (
+          <div className={styles.loadingState}>
+            <div className="spinner" />
+            <p className={styles.loadingText}>Searching for you, we'll display them shortly.</p>
+          </div>
+        ) : filtered.length === 0 && items.length === 0 ? (
           <div className={styles.empty}>
-            <p>No items match these filters.</p>
+            <p>No listings in this category yet.</p>
+            <p className={styles.emptyHint}>We're adding new listings every day. Check back soon or browse other categories.</p>
+            <button onClick={() => navigate("/markets")} type="button">Browse categories</button>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className={styles.empty}>
+            <p>No listings match these filters.</p>
+            <p className={styles.emptyHint}>Try different filters or check back — we add new listings daily.</p>
             <button onClick={resetFilters} type="button">Clear filters</button>
           </div>
+        ) : (
+          filtered.map((item) => (
+            <RentalCard key={item.id} item={item} category={category} />
+          ))
         )}
       </div>
 
       {locationPickerOpen && (
         <LocationPicker
-          categorySlug={category.slug}
+          items={items}
           selected={location}
           onSelect={(v) => { setLocation(v); }}
           onClose={() => setLocationPickerOpen(false)}
@@ -180,14 +234,19 @@ function RentalCard({ item, category }: { item: RentalItem; category: RentalCate
     .map((f) => `${f.label}: ${item.specs[f.key]}`);
 
   return (
-    <Link to={`/rental/${item.id}`} className={styles.card}>
+    <Link to={`/property/${item.id}`} className={styles.card}>
       <div className={styles.cardImage}>
-        <img src={item.images[0]} alt={item.title} />
-        {item.verified && (
+        <img src={item.images[0] ?? ""} alt={item.title} />
+        {item.verificationCount >= 5 ? (
           <span className={styles.verifiedBadge}>
             <ShieldCheck size={10} strokeWidth={2.5} />
             Verified
           </span>
+        ) : (
+          <span className={styles.verifyCount}>{item.verificationCount}/5 verified</span>
+        )}
+        {item.rejectedByLandlord && (
+          <span className={styles.rejectedBadge}>Previously rejected</span>
         )}
       </div>
       <div className={styles.cardBody}>
@@ -198,7 +257,7 @@ function RentalCard({ item, category }: { item: RentalItem; category: RentalCate
         </p>
         <p className={styles.cardPrice}>
           ₦{item.price.toLocaleString()}
-          <span className={styles.cardPriceLabel}>{item.priceLabel}</span>
+          <span className={styles.cardPriceLabel}> / {item.rentPeriod}</span>
         </p>
         <div className={styles.cardSpecs}>
           {specs.slice(0, 3).map((s, i) => (
@@ -206,7 +265,11 @@ function RentalCard({ item, category }: { item: RentalItem; category: RentalCate
           ))}
         </div>
         <div className={styles.cardProvider}>
-          <span className={styles.providerInitials}>{item.provider.initials}</span>
+          {item.provider.avatar ? (
+            <img src={item.provider.avatar} alt="" className={styles.providerAvatar} />
+          ) : (
+            <span className={styles.providerInitials}>{item.provider.initials}</span>
+          )}
           <span className={styles.providerName}>{item.provider.name}</span>
         </div>
       </div>

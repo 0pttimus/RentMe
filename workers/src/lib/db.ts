@@ -12,6 +12,7 @@ type UserRow = {
   kyc_status: string;
   trust_score: number;
   trust_level: string;
+  avatar_url: string | null;
 };
 
 function mapUser(row: UserRow): SessionUser {
@@ -27,10 +28,11 @@ function mapUser(row: UserRow): SessionUser {
     trustScore: row.trust_score,
     trustLevel: row.trust_level,
     profileComplete: fullName.trim().length >= 2 && !!phone?.trim(),
+    avatarUrl: row.avatar_url ?? null,
   };
 }
 
-const USER_SELECT = `SELECT id, email, full_name, phone, role, kyc_status, trust_score, trust_level FROM users`;
+const USER_SELECT = `SELECT id, email, full_name, phone, role, kyc_status, trust_score, trust_level, avatar_url FROM users`;
 
 export async function findUserByEmail(
   db: D1Database,
@@ -93,6 +95,7 @@ export async function createUser(
     trustScore: score,
     trustLevel: "average",
     profileComplete: fullName.length >= 2 && !!phone,
+    avatarUrl: null,
   };
 }
 
@@ -103,7 +106,7 @@ export async function setupUserWallet(
   walletEncryptionKey: string,
 ): Promise<string | null> {
   const existing = await db.prepare(
-    `SELECT id FROM users WHERE id = ? AND ton_wallet_address IS NOT NULL`
+    `SELECT id FROM users WHERE id = ? AND solana_wallet_address IS NOT NULL`
   ).bind(userId).first();
   if (existing) return null;
 
@@ -113,12 +116,12 @@ export async function setupUserWallet(
   const pubkey = keypair.publicKey.toBase58();
 
   await db
-    .prepare(`UPDATE users SET ton_wallet_address = ?, ton_encrypted_key = ? WHERE id = ?`)
+    .prepare(`UPDATE users SET solana_wallet_address = ?, encrypted_secret = ? WHERE id = ?`)
     .bind(pubkey, encryptedKey, userId)
     .run();
 
   await db
-    .prepare(`UPDATE wallets SET ton_wallet_address = ? WHERE user_id = ?`)
+    .prepare(`UPDATE wallets SET solana_wallet_address = ? WHERE user_id = ?`)
     .bind(pubkey, userId)
     .run();
 
@@ -158,7 +161,7 @@ export async function getSessionUser(
 ): Promise<SessionUser | null> {
   const row = await db
     .prepare(
-      `SELECT u.id, u.email, u.full_name, u.phone, u.role, u.kyc_status, u.trust_score, u.trust_level
+      `SELECT u.id, u.email, u.full_name, u.phone, u.role, u.kyc_status, u.trust_score, u.trust_level, u.avatar_url
        FROM sessions s
        JOIN users u ON u.id = s.user_id
        WHERE s.id = ? AND s.expires_at > datetime('now')`
@@ -171,4 +174,12 @@ export async function getSessionUser(
 
 export async function deleteSession(db: D1Database, sessionId: string): Promise<void> {
   await db.prepare(`DELETE FROM sessions WHERE id = ?`).bind(sessionId).run();
+}
+
+let lastSessionCleanup = 0;
+export async function deleteExpiredSessions(db: D1Database): Promise<void> {
+  const now = Date.now();
+  if (now - lastSessionCleanup < 600_000) return; // once per 10 min
+  lastSessionCleanup = now;
+  await db.prepare(`DELETE FROM sessions WHERE expires_at <= datetime('now')`).run();
 }

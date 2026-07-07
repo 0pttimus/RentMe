@@ -7,6 +7,37 @@
   }
 }
 
+.bellLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: $surface;
+  color: $ink;
+  border: 1px solid $line;
+  transition: background 0.15s;
+  &:active { background: $surface-alt; }
+}
+
+.bellBadge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 99px;
+  background: $danger;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+}
+
 .roleToggle {
   display: flex;
   gap: 8px;
@@ -191,4 +222,256 @@
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: $accent;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.loading {
+  text-align: center;
+  color: $ink-soft;
+  font-size: 14px;
+  padding: 24px;
+}
+
+.propertyList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.propertyCard {
+  display: flex;
+  gap: 0;
+  border-radius: $radius-md;
+  background: $surface;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+
+  &:active {
+    background: $surface-alt;
+  }
+}
+
+.propertyLink {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  flex: 1;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.propertyImage {
+  width: 80px;
+  height: 80px;
+  border-radius: $radius-sm;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.propertyImagePlaceholder {
+  width: 100%;
+  height: 100%;
+  background: $surface-alt;
+}
+
+.propertyBody {
+  min-width: 0;
+  flex: 1;
+}
+
+.propertyTitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.propertyLocation {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: $ink-soft;
+}
+
+.propertyPrice {
+  font-size: 13px;
+  font-weight: 700;
+  color: $accent;
+  margin: 0 0 2px;
+}
+
+.propertyPriceUnit {
+  font-size: 11px;
+  font-weight: 400;
+  color: $ink-faint;
+}
+
+.propertyStatus {
+  font-size: 11px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.statusActive {
+  color: #22c55e;
+}
+
+.verifyCount {
+  font-size: 10px;
+  font-weight: 600;
+  color: $ink-faint;
+  margin-left: 6px;
+}
+
+.statusInactive {
+  color: $ink-faint;
+}
+
+.editBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  color: $ink-faint;
+  cursor: pointer;
+
+  &:active {
+    background: $surface-alt;
+    color: $accent;
+  }
+}
+
+.requestList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.requestCard {
+  padding: 12px;
+}
+
+.requestBody {
+  margin-bottom: 10px;
+}
+
+.requestTenant {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 2px;
+}
+
+.requestProperty {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 2px;
+}
+
+.requestAddress {
+  font-size: 12px;
+  color: $ink-soft;
+  margin: 0;
+}
+
+.requestActions {
+  display: flex;
+  gap: 8px;
+}
+
+.approveBtn, .rejectBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 38px;
+  border: 0;
+  border-radius: $radius-sm;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:disabled { opacity: 0.5; }
+  &:active { opacity: 0.8; }
+}
+
+.approveBtn {
+  background: rgba(#22c55e, 0.15);
+  color: #22c55e;
+}
+
+.rejectBtn {
+  background: $danger-soft;
+  color: $danger;
+}
+
+.deleteBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  color: $ink-faint;
+  cursor: pointer;
+
+  &:active { color: $danger; }
+  &:disabled { opacity: 0.4; }
+}
+
+.propertyActions {
+  display: flex;
+  gap: 2px;
+}
+
+.unreserveBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  height: 44px;
+  border: none;
+  background: none;
+  color: $warn;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+
+  &:active { opacity: 0.6; }
+  &:disabled { opacity: 0.4; }
 }

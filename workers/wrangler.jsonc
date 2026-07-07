@@ -5,7 +5,8 @@
   "compatibility_date": "2026-03-01",
   "compatibility_flags": ["nodejs_compat"],
   "vars": {
-    "ENVIRONMENT": "production"
+    "ENVIRONMENT": "production",
+    "ALLOWED_ORIGIN": "http://localhost:3000,https://rentme.com.ng"
   },
   "d1_databases": [
     {

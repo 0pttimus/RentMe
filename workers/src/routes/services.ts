@@ -11,7 +11,7 @@ function json(data: unknown, status = 200) {
 
 export async function handleListServices(env: Env) {
   const rows = await env.DB.prepare(
-    `SELECT sp.*, u.full_name FROM service_providers sp
+    `SELECT sp.*, u.full_name, u.avatar_url FROM service_providers sp
      JOIN users u ON u.id = sp.user_id WHERE sp.is_verified = 1`
   ).all();
 
@@ -20,6 +20,7 @@ export async function handleListServices(env: Env) {
     return {
       id: row.id,
       name: row.full_name,
+      avatarUrl: row.avatar_url,
       categories: JSON.parse((row.categories as string) || "[]"),
       bio: row.bio,
       rating: row.rating,

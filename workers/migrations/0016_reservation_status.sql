@@ -1,0 +1,1 @@
+-- columns already exist from 0001_initial

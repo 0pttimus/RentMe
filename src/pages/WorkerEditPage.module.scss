@@ -17,18 +17,27 @@
 .back {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  margin-left: -8px;
+  gap: 2px;
+  padding: 6px 10px 6px 4px;
+  margin-left: -10px;
+  border: 0;
   border-radius: 999px;
-  color: $ink;
-  text-decoration: none;
+  background: transparent;
+  color: $accent;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
   transition: background 0.15s;
 
-  &:hover {
+  &:active {
     background: $surface-alt;
   }
+}
+
+.backLabel {
+  font-size: 17px;
+  font-weight: 500;
 }
 
 .heading {
@@ -44,6 +53,17 @@
   margin-bottom: 20px;
 }
 
+.avatarBtn {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+}
+
 .avatar {
   width: 80px;
   height: 80px;
@@ -51,16 +71,25 @@
   object-fit: cover;
   background: $surface-alt;
   box-shadow: $shadow-sm;
+  display: block;
 }
 
-.changePhoto {
-  border: 0;
-  background: transparent;
-  color: $accent;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
+.avatarOverlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.2s;
+
+  .avatarBtn:active &,
+  .avatarBtn:hover & {
+    opacity: 1;
+  }
 }
 
 .field {
@@ -275,6 +304,417 @@
   @include btn-primary;
   width: 100%;
   margin-bottom: 24px;
+}
+
+.loading {
+  color: $ink-soft;
+  font-size: 14px;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.realNameRow {
+  position: relative;
+}
+
+.inputDisabled {
+  color: $ink-faint !important;
+  cursor: not-allowed;
+  background: $surface-alt !important;
+}
+
+.lockIcon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $ink-faint;
+  pointer-events: none;
+}
+
+.pickerWrap {
+  position: relative;
+}
+
+.pickerButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid $line;
+  border-radius: 10px;
+  background: $surface;
+  color: $ink;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.15s;
+
+  &:active { border-color: $accent; }
+}
+
+.pickerDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  margin-top: 4px;
+  border: 1px solid $line;
+  border-radius: 10px;
+  background: $surface;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,.12);
+}
+
+.pickerOption {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: none;
+  color: $ink;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+
+  &:not(:last-child) { border-bottom: 1px solid $line; }
+  &:active { background: $accent-soft; }
+}
+
+.pickerOptionActive {
+  color: $accent;
+  font-weight: 600;
+}
+
+.pickerCheck {
+  flex-shrink: 0;
+}
+
+.locRow {
+  display: flex;
+  gap: 8px;
+}
+
+.locInputWrap {
+  position: relative;
+  flex: 1;
+
+  .input {
+    padding-left: 36px;
+    padding-right: 32px;
+  }
+}
+
+.locInputIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $ink-faint;
+  pointer-events: none;
+}
+
+.locClear {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: $ink-faint;
+  cursor: pointer;
+
+  &:active { background: $surface-alt; }
+}
+
+.detectBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 1px solid $line;
+  border-radius: 10px;
+  background: $surface;
+  color: $accent;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:active { background: $accent-soft; }
+  &:disabled { opacity: 0.4; }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.detectSpin { animation: spin 0.8s linear infinite; }
+
+.locSuggestions {
+  margin-top: 4px;
+  border: 1px solid $line;
+  border-radius: 10px;
+  background: $surface;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,.12);
+}
+
+.locSuggestion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: none;
+  color: $ink;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+
+  &:not(:last-child) { border-bottom: 1px solid $line; }
+  &:active { background: $accent-soft; }
+}
+
+.sheetOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(0,0,0,.4);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.sheet {
+  width: 100%;
+  padding: 12px 20px 32px;
+  border-radius: 16px 16px 0 0;
+  background: $surface;
+  text-align: center;
+  animation: slideUp 0.35s $ease-spring;
+}
+
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.sheetHandle {
+  width: 36px;
+  height: 5px;
+  margin: 0 auto 16px;
+  border-radius: 999px;
+  background: $line;
+}
+
+.sheetTitle {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.sheetDesc {
+  color: $ink-soft;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.sheetActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sheetBtnPrimary {
+  @include btn-primary;
+}
+
+.sheetBtnSecondary {
+  @include btn-ghost;
+}
+
+.bannerBtn {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: $radius-sm;
+  overflow: hidden;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.bannerPreview {
+  display: block;
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: $radius-sm;
+}
+
+.bannerPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 100px;
+  border: 1px dashed $line;
+  border-radius: $radius-sm;
+  background: $surface-alt;
+  color: $ink-faint;
+  font-size: 12px;
+  transition: background 0.15s;
+
+  &:active { background: $line; }
+}
+
+.pillGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.catPill {
+  padding: 8px 14px;
+  border: 1px solid $line;
+  border-radius: 999px;
+  background: $surface;
+  color: $ink-soft;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+
+  &:active {
+    background: $surface-alt;
+  }
+}
+
+.catPillActive {
+  background: rgba($accent, 0.12);
+  border-color: $accent;
+  color: $accent;
+  font-weight: 600;
+}
+
+.videoBadge {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.playIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.typeLabel {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  font-size: 12px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.idSection {
+  margin-bottom: 16px;
+  padding: 14px;
+  border-radius: $radius-md;
+  background: $surface;
+  box-shadow: $shadow-sm;
+}
+
+.idRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.idIcon {
+  margin-top: 2px;
+  flex-shrink: 0;
+  color: $ink-soft;
+}
+
+.idLabel {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.idHint {
+  color: $ink-soft;
+  font-size: 11px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.idDone {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba($accent, 0.1);
+  color: $accent;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.idUpload {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: $radius-sm;
+  background: $accent;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.toggle:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .switchSection {

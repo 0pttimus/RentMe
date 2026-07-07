@@ -1,39 +1,65 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useAppSelector } from "@/store/hooks";
+import { hasClientSession } from "@/lib/auth/session";
+import { getPostAuthPath } from "@/lib/auth/redirect";
 import styles from "./WelcomeScreen.module.scss";
 
 export default function WelcomeScreen() {
   const navigate = useNavigate();
+  const user = useAppSelector((s) => s.auth.user);
+  const loaded = useAppSelector((s) => s.auth.loaded);
+
+  // If we already know the user is logged in, redirect immediately
+  // without waiting for the server — hasClientSession covers the
+  // case where auth state is still loading.
+  useEffect(() => {
+    if (hasClientSession() && loaded && user) {
+      navigate(getPostAuthPath(user, null), { replace: true });
+    }
+  }, [loaded, user, navigate]);
+
+  // Hard redirect once auth loads — covers the case where someone
+  // navigates to "/" manually while already signed in.
+  if (loaded && user) {
+    return <Navigate to={getPostAuthPath(user, null)} replace />;
+  }
 
   return (
     <div className={styles.page}>
-      <div className={styles.hero}>
-        <div className={styles.art}>
-          <svg viewBox="0 0 240 200" fill="none" className={styles.artSvg}>
-            <rect x="60" y="70" width="120" height="100" rx="12" className={styles.houseBody} />
-            <polygon points="40,85 120,30 200,85" className={styles.roof} />
-            <rect x="95" y="110" width="22" height="55" rx="4" className={styles.door} />
-            <rect x="130" y="95" width="20" height="20" rx="4" className={styles.window} />
-            <rect x="130" y="120" width="20" height="20" rx="4" className={styles.window} />
-            <rect x="155" y="95" width="20" height="20" rx="4" className={styles.window} />
-            <rect x="155" y="120" width="20" height="20" rx="4" className={styles.window} />
-            <circle cx="160" cy="105" r="3" className={styles.windowAccent} />
-            <rect x="100" y="10" width="40" height="40" rx="8" className={styles.chimney} />
-            <circle cx="72" cy="160" r="14" className={styles.bubble} />
-            <circle cx="175" cy="52" r="10" className={styles.bubbleSmall} />
-            <ellipse cx="60" cy="180" rx="50" ry="8" className={styles.ground} />
-            <ellipse cx="180" cy="180" rx="60" ry="8" className={styles.ground} />
-          </svg>
-        </div>
+      {/* decorative bg circle top-right */}
+      <div className={styles.bgCircle} />
 
-        <div className={styles.textBlock}>
-          <h1 className={styles.title}>
-            <span className={styles.titleRent}>Rent</span>
-            <span className={styles.titleMe}>Me</span>
-          </h1>
-          <p className={styles.subtitle}>The easiest way to rent anything.</p>
-        </div>
+      {/* top section: logo + title + subtitle */}
+      <div className={styles.top}>
+        <img
+          src="/rentme-logo.png"
+          alt="RentMe"
+          className={styles.appIcon}
+          draggable={false}
+        />
+
+        <h1 className={styles.title}>
+          <span className={styles.titleRent}>Rent</span>
+          <span className={styles.titleMe}>Me</span>
+        </h1>
+
+        <p className={styles.subtitle}>
+          The easiest way<br />to rent anything.
+        </p>
       </div>
 
+      {/* hero illustration */}
+      <div className={styles.illustration}>
+        <img
+          src="/house-illustration.png"
+          alt=""
+          className={styles.illustrationImg}
+          draggable={false}
+        />
+      </div>
+
+      {/* bottom CTA buttons */}
       <div className={styles.footer}>
         <button
           className={styles.createBtn}

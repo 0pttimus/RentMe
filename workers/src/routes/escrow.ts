@@ -4,6 +4,8 @@ import { requireUser } from "../lib/auth";
 import type { Env } from "../lib/env";
 import { SolanaClient } from "../lib/solana";
 import { decryptMnemonic } from "../lib/wallet-crypto";
+import { generateId } from "../lib/session";
+import { sendPushNotification } from "../lib/push";
 
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), { status, headers: { "Content-Type": "application/json" } });
@@ -11,10 +13,10 @@ function json(data: unknown, status = 200) {
 
 async function userKeypair(userId: string, email: string, env: Env): Promise<Keypair | Response> {
   const row = await env.DB.prepare(
-    `SELECT ton_encrypted_key FROM users WHERE id = ?`
-  ).bind(userId).first<{ ton_encrypted_key: string }>();
-  if (!row?.ton_encrypted_key) return json({ error: "No Solana wallet." }, 400);
-  const secretStr = decryptMnemonic(row.ton_encrypted_key, env.WALLET_ENCRYPTION_KEY!, email);
+    `SELECT encrypted_secret FROM users WHERE id = ?`
+  ).bind(userId).first<{ encrypted_secret: string }>();
+  if (!row?.encrypted_secret) return json({ error: "No Solana wallet." }, 400);
+  const secretStr = decryptMnemonic(row.encrypted_secret, env.WALLET_ENCRYPTION_KEY!, email);
   return Keypair.fromSecretKey(Buffer.from(secretStr, "base64"));
 }
 
@@ -49,6 +51,7 @@ export async function handleDepositToEscrow(request: Request, env: Env) {
   const reservation = await reservationByEscrow(env.DB, address);
   if (!reservation) return notFound();
   if (reservation.tenant_id !== user.id) return json({ error: "Only tenant can deposit" }, 403);
+  if (reservation.status !== "approved") return json({ error: "Escrow already funded or reservation not approved." }, 409);
 
   const sol = new SolanaClient(env);
   const tenantKeypair = await userKeypair(user.id, user.email, env);
@@ -68,9 +71,12 @@ export async function handleDepositToEscrow(request: Request, env: Env) {
     tenantKeypair,
   );
 
-  await env.DB.prepare(
-    `UPDATE reservations SET status = 'funded', updated_at = datetime('now') WHERE id = ?`
-  ).bind(reservation.id).run();
+  await env.DB.batch([
+    env.DB.prepare(`UPDATE reservations SET status = 'funded', updated_at = datetime('now') WHERE id = ?`).bind(reservation.id),
+    env.DB.prepare(`UPDATE properties SET status = 'reserved' WHERE id = ?`).bind(reservation.property_id),
+    env.DB.prepare(`INSERT INTO notifications (id, user_id, title, body, type) VALUES (?, ?, 'Reservation deposit confirmed', ?, 'reservation')`).bind(generateId(), reservation.landlord_id, `Deposit received onchain. Your property has been reserved.`),
+  ]);
+  sendPushNotification(reservation.landlord_id, "Reservation deposit confirmed", `Deposit received onchain. Your property has been reserved.`, env);
 
   return json({ txHash: sig, status: "funded" });
 }

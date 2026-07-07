@@ -284,6 +284,36 @@
   font-weight: 700;
 }
 
+.verifyCount {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.rejectedBadge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: $danger-soft;
+  color: $danger;
+  font-size: 9px;
+  font-weight: 700;
+}
+
 .cardBody {
   flex: 1;
   min-width: 0;
@@ -351,6 +381,15 @@
   color: $accent;
   font-size: 9px;
   font-weight: 700;
+  flex-shrink: 0;
+}
+
+.providerAvatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .providerName {
@@ -372,4 +411,24 @@
     cursor: pointer;
     margin-top: 8px;
   }
+}
+
+.emptyHint {
+  font-size: 12px;
+  color: $ink-faint;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0;
+  gap: 16px;
+}
+
+.loadingText {
+  font-size: 13px;
+  color: $ink-soft;
 }

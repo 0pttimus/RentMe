@@ -45,8 +45,9 @@ export async function findMatchingPassports(
     bindings.push(addr.city);
   }
   if (addr.state) {
+    const sc = getStateCode(addr.state);
     parts.push(`(LOWER(state_code) = LOWER(?) OR LOWER(state_code) = LOWER(?))`);
-    bindings.push(getStateCode(addr.state));
+    bindings.push(sc, sc);
   }
 
   if (parts.length === 0) return [];

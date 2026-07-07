@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Check, ChevronDown } from "lucide-react";
+import { Search, Check, ChevronDown, X, Image as ImageIcon } from "lucide-react";
 import { SubPageHeader } from "@/components/SubPageHeader";
 import { searchPassports, createPassportUnit, createProperty, getPassportUnits } from "@/lib/api/client";
+import { formatAmountInput, parseAmountInput } from "@/lib/format";
 import { nigeriaLocations } from "@/lib/nigeria-locations";
 import styles from "./ListPropertyPage.module.scss";
 
 const PROPERTY_TYPES = ["apartment", "duplex", "bungalow", "self_contain", "studio", "penthouse", "commercial"];
+const RENT_PERIODS = ["any", "daily", "weekly", "monthly", "yearly"] as const;
 
 export default function ListPropertyPage() {
   const navigate = useNavigate();
+  const photoInputRef = useRef<HTMLInputElement>(null);
 
   const [street, setStreet] = useState("");
   const [houseNumber, setHouseNumber] = useState("");
@@ -24,6 +27,9 @@ export default function ListPropertyPage() {
   const [bedrooms, setBedrooms] = useState(1);
   const [bathrooms, setBathrooms] = useState(1);
   const [rentAmountNgn, setRentAmountNgn] = useState("");
+  const [rentPeriod, setRentPeriod] = useState<string>("yearly");
+  const [rentDuration, setRentDuration] = useState(1);
+  const [photos, setPhotos] = useState<string[]>([]);
   const [searching, setSearching] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -35,6 +41,18 @@ export default function ListPropertyPage() {
   const [stateOpen, setStateOpen] = useState(false);
 
   const areaOptions = nigeriaLocations.find((l) => l.state === state)?.areas ?? [];
+
+  const handlePhotoPick = (file?: File) => {
+    if (!file) return;
+    if (photos.length >= 10) return;
+    const reader = new FileReader();
+    reader.onload = () => setPhotos((prev) => [...prev, String(reader.result)]);
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemovePhoto = (i: number) => {
+    setPhotos((prev) => prev.filter((_, idx) => idx !== i));
+  };
 
   async function handleSearch() {
     if (!street || !city) {
@@ -77,7 +95,7 @@ export default function ListPropertyPage() {
   }
 
   async function handleSubmit() {
-    if (!rentAmountNgn || Number(rentAmountNgn) <= 0) {
+    if (!rentAmountNgn || parseAmountInput(rentAmountNgn) <= 0) {
       setError("Enter a valid rent amount.");
       return;
     }
@@ -97,7 +115,10 @@ export default function ListPropertyPage() {
       totalUnits,
       bedrooms,
       bathrooms,
-      rentAmountNgn: Number(rentAmountNgn),
+      rentAmountNgn: parseAmountInput(rentAmountNgn),
+      rentPeriod,
+      rentDuration: rentPeriod === "any" ? undefined : rentDuration,
+      photos,
     };
 
     if (foundPassport) {
@@ -234,6 +255,27 @@ export default function ListPropertyPage() {
           )}
 
           <label className={styles.label}>
+            Photos
+            <div className={styles.photoGrid}>
+              {photos.map((src, i) => (
+                <div key={i} className={styles.photoThumb}>
+                  <img src={src} alt="" />
+                  <button type="button" className={styles.photoRemove} onClick={() => handleRemovePhoto(i)}>
+                    <X size={12} strokeWidth={3} />
+                  </button>
+                </div>
+              ))}
+              {photos.length < 10 && (
+                <button type="button" className={styles.photoAdd} onClick={() => photoInputRef.current?.click()}>
+                  <ImageIcon size={24} strokeWidth={1.5} />
+                  <span>Add photo</span>
+                </button>
+              )}
+            </div>
+            <input ref={photoInputRef} type="file" accept="image/*" hidden onChange={(e) => handlePhotoPick(e.target.files?.[0])} />
+          </label>
+
+          <label className={styles.label}>
             Listing Title
             <input type="text" className={styles.input} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Modern 2-Bed in Lekki" />
           </label>
@@ -252,9 +294,35 @@ export default function ListPropertyPage() {
             </label>
           </div>
           <label className={styles.label}>
-            Annual Rent (NGN)
-            <input type="number" className={styles.input} value={rentAmountNgn} onChange={(e) => setRentAmountNgn(e.target.value)} placeholder="e.g. 3500000" />
+            Rent Amount (NGN)
+            <input type="text" className={styles.input} value={rentAmountNgn}
+              onChange={(e) => setRentAmountNgn(formatAmountInput(e.target.value))}
+              placeholder="e.g. 3,500,000" inputMode="numeric" />
           </label>
+          <label className={styles.label}>
+            Rent Period
+            <div className={styles.periodToggle}>
+              {RENT_PERIODS.map((p) => (
+                <button key={p} type="button"
+                  className={[styles.periodBtn, rentPeriod === p ? styles.periodBtnActive : ""].join(" ")}
+                  onClick={() => { setRentPeriod(p); if (p === "yearly") setRentDuration(1); }}
+                >
+                  {p === "any" ? "Any" : p.charAt(0).toUpperCase() + p.slice(1)}
+                </button>
+              ))}
+            </div>
+          </label>
+          {rentPeriod !== "any" && (
+            <label className={styles.label}>
+              Duration ({rentPeriod === "daily" ? "days" : rentPeriod === "weekly" ? "weeks" : rentPeriod === "monthly" ? "months" : "years"})
+              <input type="number" className={styles.input}
+                value={rentDuration}
+                onChange={(e) => setRentDuration(Math.max(1, Number(e.target.value)))}
+                min={1} max={rentPeriod === "yearly" ? 2 : 365}
+              />
+              {rentPeriod === "yearly" && <p className={styles.hint}>Max 2 years</p>}
+            </label>
+          )}
           <button type="button" className={styles.submitBtn} onClick={handleSubmit} disabled={loading || !title || !rentAmountNgn}>
             {loading ? "Submitting..." : "Submit for Verification"}
           </button>

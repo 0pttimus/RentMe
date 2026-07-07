@@ -29,6 +29,21 @@
 
 .item {
   padding: 0;
+  position: relative;
+}
+
+.unread {
+  background: $accent-soft;
+}
+
+.dot {
+  position: absolute;
+  top: 14px;
+  left: -6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $accent;
 }
 
 .itemBtn {

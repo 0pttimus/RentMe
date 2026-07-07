@@ -1,23 +1,9 @@
-import {
-  BadgeCheck,
-  Briefcase,
-  ChevronRight,
-  Camera,
-  Check,
-  X,
-  FileCheck,
-  Gift,
-  HelpCircle,
-  Home,
-  LogOut,
-  Settings,
-  Shield,
-} from "lucide-react";
+import { Bookmark, Briefcase, ChevronRight, Camera, Check, X, Clock, FileCheck, Gift, HelpCircle, Home, LogOut, Settings, Shield, Verified } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/Card";
 import { TrustBadge } from "@/components/ui/Badge";
-import type { AuthUser } from "@/lib/api/client";
+import { uploadAvatar, type AuthUser } from "@/lib/api/client";
 import type { TrustLevel } from "@/lib/types";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setUser, signOut } from "@/store/slices/authSlice";
@@ -26,9 +12,11 @@ import styles from "./ProfilePanel.module.scss";
 
 const menuItems = [
   { icon: Home, label: "List a Property", href: "/list-property" },
+  { icon: Verified, label: "Get paid to verify listings", href: "/verifier/apply" },
+  { icon: Bookmark, label: "Saved", href: "/saved" },
   { icon: FileCheck, label: "KYC Verification", href: "/kyc", badgeKey: "kyc" as const },
   { icon: Shield, label: "Trust Score", href: "/trust", badgeKey: "trust" as const },
-  { icon: BadgeCheck, label: "Rental History", href: "/rental-history" },
+  { icon: Clock, label: "Rental History", href: "/rental-history" },
   { icon: Gift, label: "Rewards", href: "/rewards" },
   { icon: Settings, label: "Settings", href: "/settings" },
   { icon: HelpCircle, label: "Help & Support", href: "/help" },
@@ -84,7 +72,7 @@ export function ProfilePanel({ onNavigate }: ProfilePanelProps) {
     fullName: user?.fullName ?? extras.fullName ?? "Guest",
     occupation: extras.occupation ?? "",
     phone: extras.phone ?? user?.phone ?? "",
-    avatarUrl: extras.avatarUrl ?? "",
+    avatarUrl: extras.avatarUrl ?? user?.avatarUrl ?? "",
   };
   const [draft, setDraft] = useState<ProfileExtras>({
     fullName: profile.fullName,
@@ -132,7 +120,7 @@ export function ProfilePanel({ onNavigate }: ProfilePanelProps) {
     reader.readAsDataURL(file);
   }
 
-  function saveProfile() {
+  async function saveProfile() {
     const next = {
       ...draft,
       fullName: isIdVerified ? profile.fullName : draft.fullName.trim(),
@@ -147,8 +135,12 @@ export function ProfilePanel({ onNavigate }: ProfilePanelProps) {
         ...user,
         fullName: next.fullName,
         phone: next.phone || user.phone,
+        avatarUrl: next.avatarUrl || user.avatarUrl,
       };
       dispatch(setUser(updatedUser));
+      if (next.avatarUrl && next.avatarUrl !== user.avatarUrl) {
+        await uploadAvatar(next.avatarUrl);
+      }
     }
 
     setEditOpen(false);

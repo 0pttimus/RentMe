@@ -2,8 +2,18 @@ import { useEffect, useState } from "react";
 import { Bell } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { SubPageHeader } from "@/components/SubPageHeader";
-import { getNotifications } from "@/lib/api/client";
+import { getNotifications, markNotificationRead } from "@/lib/api/client";
+import { useUnreadCount } from "@/hooks/useUnreadCount";
 import styles from "./NotificationsPage.module.scss";
+
+interface Notification {
+  id: string;
+  title: string;
+  body: string;
+  type: string;
+  read: number;
+  created_at: string;
+}
 
 function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -18,16 +28,27 @@ function timeAgo(dateStr: string) {
 }
 
 export default function NotificationsPage() {
-  const [items, setItems] = useState<
-    { id: string; title: string; body: string; type: string; created_at: string }[]
-  >([]);
+  const [items, setItems] = useState<Notification[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const { refetch: refetchCount } = useUnreadCount();
 
   useEffect(() => {
     getNotifications().then((res) => {
       if (res.data) setItems(res.data.notifications);
     });
   }, []);
+
+  function handleExpand(id: string) {
+    const open = expanded === id;
+    if (open) { setExpanded(null); return; }
+    setExpanded(id);
+    const n = items.find((x) => x.id === id);
+    if (n && !n.read) {
+      markNotificationRead(id);
+      refetchCount();
+      setItems((prev) => prev.map((x) => x.id === id ? { ...x, read: 1 } : x));
+    }
+  }
 
   return (
     <div className={["page-content", styles.page].join(" ")}>
@@ -42,8 +63,9 @@ export default function NotificationsPage() {
           items.map((n) => {
             const open = expanded === n.id;
             return (
-              <Card key={n.id} className={styles.item}>
-                <button className={styles.itemBtn} onClick={() => setExpanded(open ? null : n.id)} type="button">
+              <Card key={n.id} className={`${styles.item} ${!n.read ? styles.unread : ""}`}>
+                <button className={styles.itemBtn} onClick={() => handleExpand(n.id)} type="button">
+                  {!n.read && <span className={styles.dot} />}
                   <div className={styles.itemHeader}>
                     <p className={styles.itemTitle}>{n.title}</p>
                     <span className={styles.itemTime}>{timeAgo(n.created_at)}</span>

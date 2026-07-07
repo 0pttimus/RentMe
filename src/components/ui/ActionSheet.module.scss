@@ -1,0 +1,95 @@
+@use "../../styles/tokens" as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.4);
+  animation: fadeIn 0.2s;
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  padding: 8px;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+  animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.header {
+  padding: 16px 20px 4px;
+  text-align: center;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: $ink;
+  margin: 0 0 4px;
+}
+
+.description {
+  font-size: 12px;
+  color: $ink-soft;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba($surface, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.cancel {
+  margin-top: 8px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba($surface, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 56px;
+  border: none;
+  background: transparent;
+  color: $accent;
+  font-size: 20px;
+  font-family: inherit;
+  cursor: pointer;
+
+  & + & {
+    border-top: 0.5px solid rgba($line, 0.5);
+  }
+
+  &:active {
+    background: $surface-alt;
+  }
+}
+
+.destructive {
+  color: $danger;
+  font-weight: 600;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}

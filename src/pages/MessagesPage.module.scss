@@ -163,6 +163,69 @@
   color: $ink;
 }
 
+.conversationList {
+  flex: 1;
+  padding: 0 16px;
+  overflow-y: auto;
+}
+
+.convRow {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+
+  &:active {
+    background: $surface-alt;
+  }
+}
+
+.convInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.convName {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.convPreview {
+  font-size: 12px;
+  color: $ink-soft;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.convChevron {
+  flex-shrink: 0;
+  color: $ink-faint;
+}
+
+.backToConversations {
+  display: block;
+  width: 100%;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: $accent;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+}
+
 .inputBar {
   display: flex;
   gap: 8px;

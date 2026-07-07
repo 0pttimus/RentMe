@@ -1,4 +1,4 @@
-const SESSION_TTL_DAYS = 30;
+const SESSION_TTL_DAYS = 7;
 
 export interface SessionUser {
   id: string;
@@ -10,6 +10,7 @@ export interface SessionUser {
   trustScore: number;
   trustLevel: string;
   profileComplete: boolean;
+  avatarUrl: string | null;
 }
 
 export function generateId(): string {

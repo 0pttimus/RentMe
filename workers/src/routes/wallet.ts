@@ -94,14 +94,14 @@ export async function handleUsdcDeposit(
   }
 
   const wallet = await env.DB.prepare(
-    `SELECT id, ton_wallet_address FROM wallets WHERE user_id = ?`
-  ).bind(auth.id).first<{ id: string; ton_wallet_address: string | null }>();
-  if (!wallet || !wallet.ton_wallet_address) {
+    `SELECT id, solana_wallet_address FROM wallets WHERE user_id = ?`
+  ).bind(auth.id).first<{ id: string; solana_wallet_address: string | null }>();
+  if (!wallet || !wallet.solana_wallet_address) {
     return json({ error: "No Solana wallet found. Complete your profile first." }, 400);
   }
 
   return json({
-    walletAddress: wallet.ton_wallet_address,
+    walletAddress: wallet.solana_wallet_address,
     amount: usdcAmount,
     tokenMint: env.TOKEN_MINT_ADDRESS || "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
   });
@@ -115,14 +115,14 @@ export async function handleUsdcDepositVerify(
   if (auth instanceof Response) return auth;
 
   const wallet = await env.DB.prepare(
-    `SELECT id, ton_wallet_address FROM wallets WHERE user_id = ?`
-  ).bind(auth.id).first<{ id: string; ton_wallet_address: string | null }>();
-  if (!wallet || !wallet.ton_wallet_address) {
+    `SELECT id, solana_wallet_address FROM wallets WHERE user_id = ?`
+  ).bind(auth.id).first<{ id: string; solana_wallet_address: string | null }>();
+  if (!wallet || !wallet.solana_wallet_address) {
     return json({ error: "No Solana wallet found." }, 400);
   }
 
   const solana = new SolanaClient(env);
-  const userPubkey = new PublicKey(wallet.ton_wallet_address);
+  const userPubkey = new PublicKey(wallet.solana_wallet_address);
 
   const balResult = await solana.tryGetTokenBalance(userPubkey);
   if (balResult.error) {
@@ -180,10 +180,10 @@ export async function handleUsdcWithdraw(
   }
 
   const wallet = await env.DB.prepare(
-    `SELECT id, balance_ngn, ton_wallet_address FROM wallets WHERE user_id = ?`
-  ).bind(auth.id).first<{ id: string; balance_ngn: number; ton_wallet_address: string | null }>();
+    `SELECT id, balance_ngn, solana_wallet_address FROM wallets WHERE user_id = ?`
+  ).bind(auth.id).first<{ id: string; balance_ngn: number; solana_wallet_address: string | null }>();
   if (!wallet) return json({ error: "Wallet not found." }, 400);
-  if (!wallet.ton_wallet_address) return json({ error: "No Solana wallet. Complete your profile first." }, 400);
+  if (!wallet.solana_wallet_address) return json({ error: "No Solana wallet. Complete your profile first." }, 400);
 
   if (wallet.balance_ngn < ngnAmount) {
     return json({ error: "Insufficient NGN balance." }, 400);
@@ -196,7 +196,7 @@ export async function handleUsdcWithdraw(
 
   const rawAmount = BigInt(Math.floor(usdcAmount * 10 ** USDC_DECIMALS));
   const solana = new SolanaClient(env);
-  const userPubkey = new PublicKey(wallet.ton_wallet_address);
+  const userPubkey = new PublicKey(wallet.solana_wallet_address);
 
   try {
     const txSig = await solana.transferUsdc(userPubkey, rawAmount);
@@ -256,6 +256,8 @@ export async function handleNairaWithdraw(
   return json({ success: true, message: "Withdrawal request submitted. We will process it shortly." });
 }
 
+const PAGE = 20;
+
 export async function handleWalletGet(
   request: Request,
   env: Env
@@ -263,16 +265,43 @@ export async function handleWalletGet(
   const auth = await requireUser(request, env.DB);
   if (auth instanceof Response) return auth;
 
+  const url = new URL(request.url);
+  const offset = Math.max(0, Number(url.searchParams.get("offset")) || 0);
+
   const wallet = await env.DB.prepare(
     `SELECT balance_ngn FROM wallets WHERE user_id = ?`
   ).bind(auth.id).first<{ balance_ngn: number }>();
 
   const txs = await env.DB.prepare(
-    `SELECT type, amount_ngn, reference, created_at FROM wallet_transactions WHERE wallet_id = (SELECT id FROM wallets WHERE user_id = ?) ORDER BY created_at DESC LIMIT 50`
-  ).bind(auth.id).all<{ type: string; amount_ngn: number; reference: string | null; created_at: string }>();
+    `SELECT type, amount_ngn, reference, created_at FROM wallet_transactions WHERE wallet_id = (SELECT id FROM wallets WHERE user_id = ?) ORDER BY created_at DESC LIMIT ? OFFSET ?`
+  ).bind(auth.id, PAGE + 1, offset).all<{ type: string; amount_ngn: number; reference: string | null; created_at: string }>();
+
+  const reservations = await env.DB.prepare(
+    `SELECT r.id, r.property_id, r.status, r.deposit_amount_ngn, r.created_at, p.title
+     FROM reservations r
+     JOIN properties p ON p.id = r.property_id
+     WHERE r.tenant_id = ? OR p.landlord_id = ?
+     ORDER BY r.created_at DESC
+     LIMIT ? OFFSET ?`
+  ).bind(auth.id, auth.id, PAGE + 1, offset).all<{ id: string; status: string; deposit_amount_ngn: number; created_at: string; title: string }>();
+
+  const bookings = await env.DB.prepare(
+    `SELECT sb.id, sb.status, sb.total_amount_ngn, sb.upfront_amount_ngn, sb.created_at, sp.user_id AS owner_id
+     FROM service_bookings sb
+     JOIN service_providers sp ON sp.id = sb.provider_id
+     WHERE sb.customer_id = ? OR sp.user_id = ?
+     ORDER BY sb.created_at DESC
+     LIMIT ? OFFSET ?`
+  ).bind(auth.id, auth.id, PAGE + 1, offset).all<{ id: string; status: string; total_amount_ngn: number; upfront_amount_ngn: number; created_at: string; owner_id: string }>();
+
+  const results = txs.results ?? [];
+  const hasMore = results.length > PAGE;
 
   return json({
     balanceNgn: wallet?.balance_ngn ?? 0,
-    transactions: txs.results ?? [],
+    transactions: hasMore ? results.slice(0, PAGE) : results,
+    reservations: (reservations.results ?? []).slice(0, PAGE),
+    bookings: (bookings.results ?? []).slice(0, PAGE),
+    hasMore,
   });
 }

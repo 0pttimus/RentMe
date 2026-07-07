@@ -15,6 +15,7 @@ import WalletPayPage from "@/pages/WalletPayPage";
 import PayHirePage from "@/pages/PayHirePage";
 import HirePage from "@/pages/HirePage";
 import PropertyPage from "@/pages/PropertyPage";
+import EditPropertyPage from "@/pages/EditPropertyPage";
 import ReservePage from "@/pages/ReservePage";
 import ProfilePage from "@/pages/ProfilePage";
 import NotificationsPage from "@/pages/NotificationsPage";
@@ -22,6 +23,7 @@ import KycPage from "@/pages/KycPage";
 import TrustPage from "@/pages/TrustPage";
 import RentalHistoryPage from "@/pages/RentalHistoryPage";
 import ListPropertyPage from "@/pages/ListPropertyPage";
+import SavedPage from "@/pages/SavedPage";
 import RewardsPage from "@/pages/RewardsPage";
 import SettingsPage from "@/pages/SettingsPage";
 import HelpPage from "@/pages/HelpPage";
@@ -31,6 +33,7 @@ import MessagesPage from "@/pages/MessagesPage";
 import FreelanceHomePage from "@/pages/FreelanceHomePage";
 import FreelancePortalPage from "@/pages/FreelancePortalPage";
 import FreelanceWalletPage from "@/pages/FreelanceWalletPage";
+import FreelanceNotificationsPage from "@/pages/FreelanceNotificationsPage";
 import WorkerProfilePage from "@/pages/WorkerProfilePage";
 import WorkerEditPage from "@/pages/WorkerEditPage";
 import RepairRequestPage from "@/pages/RepairRequestPage";
@@ -42,6 +45,9 @@ import RentalItemPage from "@/pages/RentalItemPage";
 import WalletCreatePage from "@/pages/WalletCreatePage";
 import WalletExportPage from "@/pages/WalletExportPage";
 import AppLockPage from "@/pages/AppLockPage";
+import VerifierApplyPage from "@/pages/VerifierApplyPage";
+import VerifierDashboardPage from "@/pages/VerifierDashboardPage";
+import UserProfilePage from "@/pages/UserProfilePage";
 
 export const router = createBrowserRouter([
   {
@@ -61,6 +67,7 @@ export const router = createBrowserRouter([
               { path: "freelance/home", element: <FreelanceHomePage /> },
               { path: "freelance/portal", element: <FreelancePortalPage /> },
               { path: "freelance/wallet", element: <FreelanceWalletPage /> },
+              { path: "freelance/notifications", element: <FreelanceNotificationsPage /> },
               { path: "freelance/edit-profile", element: <WorkerEditPage /> },
               { path: "worker/:id", element: <WorkerProfilePage /> },
               { path: "worker/:id/order", element: <OrderWorkerPage /> },
@@ -74,6 +81,7 @@ export const router = createBrowserRouter([
               { path: "markets/category/:slug", element: <CategoryMarketPage /> },
               { path: "rental/:id", element: <RentalItemPage /> },
               { path: "property/:id", element: <PropertyPage /> },
+              { path: "property/:id/edit", element: <EditPropertyPage /> },
               { path: "portal", element: <PortalPage /> },
               { path: "wallet", element: <WalletPage /> },
               { path: "wallet/deposit", element: <WalletDepositPage /> },
@@ -88,12 +96,16 @@ export const router = createBrowserRouter([
               { path: "trust", element: <TrustPage /> },
               { path: "rental-history", element: <RentalHistoryPage /> },
               { path: "list-property", element: <ListPropertyPage /> },
+              { path: "saved", element: <SavedPage /> },
               { path: "rewards", element: <RewardsPage /> },
               { path: "settings", element: <SettingsPage /> },
               { path: "help", element: <HelpPage /> },
               { path: "admin", element: <AdminPage /> },
               { path: "assistant", element: <AssistantPage /> },
               { path: "messages", element: <MessagesPage /> },
+              { path: "verifier/apply", element: <VerifierApplyPage /> },
+              { path: "verifier/dashboard", element: <VerifierDashboardPage /> },
+              { path: "user/:id", element: <UserProfilePage /> },
             ],
           },
           { path: "*", element: <Navigate to="/" replace /> },

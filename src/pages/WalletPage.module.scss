@@ -226,3 +226,22 @@
     background: $surface-alt;
   }
 }
+
+.loadMore {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  background: $surface;
+  color: $ink;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  @include tap-scale;
+
+  &:active {
+    background: $surface-alt;
+  }
+}
