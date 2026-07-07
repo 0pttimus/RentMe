@@ -30,11 +30,13 @@ function timeAgo(dateStr: string) {
 export default function NotificationsPage() {
   const [items, setItems] = useState<Notification[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const { refetch: refetchCount } = useUnreadCount();
 
   useEffect(() => {
     getNotifications().then((res) => {
       if (res.data) setItems(res.data.notifications);
+      setLoading(false);
     });
   }, []);
 
@@ -53,8 +55,18 @@ export default function NotificationsPage() {
   return (
     <div className={["page-content", styles.page].join(" ")}>
       <SubPageHeader title="Notifications" prevTitle="Profile" backHref="/profile" />
-      <div className={styles.list}>
-        {items.length === 0 ? (
+      <div className={`${styles.list} stagger-in`}>
+        {loading ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} style={{ padding: 16 }}>
+                <div className="skeleton" style={{ height: 14, width: "60%", borderRadius: 6, marginBottom: 6 }} />
+                <div className="skeleton" style={{ height: 11, width: "40%", borderRadius: 6, marginBottom: 4 }} />
+                <div className="skeleton" style={{ height: 11, width: "85%", borderRadius: 6 }} />
+              </div>
+            ))}
+          </div>
+        ) : items.length === 0 ? (
           <div className={styles.empty}>
             <Bell className={styles.emptyIcon} size={40} strokeWidth={1.5} />
             <p className={styles.emptyText}>No notifications yet</p>

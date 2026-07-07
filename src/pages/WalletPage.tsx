@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ArrowDownRight, ArrowUpRight, Home, Briefcase, ChevronRight, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/Card";
+
 import { getWallet } from "@/lib/api/client";
 import { formatNaira, formatStatus } from "@/lib/format";
 import { downloadReceiptImage } from "@/lib/receipt";
@@ -60,6 +61,7 @@ export default function WalletPage() {
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getWallet(0).then((res) => {
@@ -70,6 +72,7 @@ export default function WalletPage() {
         setHasMore(res.data.hasMore);
         setOffset(20);
       }
+      setLoading(false);
     });
   }, []);
 
@@ -91,10 +94,17 @@ export default function WalletPage() {
         <h1>Wallet</h1>
       </div>
 
-      <Card className={styles.balanceCard}>
-        <p className={styles.balanceLabel}>Available balance</p>
-        <p className={styles.balanceAmount}>{formatNaira(balance)}</p>
-      </Card>
+      {loading ? (
+        <Card className={styles.balanceCard}>
+          <div className="skeleton" style={{ width: 80, height: 12, borderRadius: 6, marginBottom: 8 }} />
+          <div className="skeleton" style={{ width: 140, height: 28, borderRadius: 8 }} />
+        </Card>
+      ) : (
+        <Card className={styles.balanceCard}>
+          <p className={styles.balanceLabel}>Available balance</p>
+          <p className={styles.balanceAmount}>{formatNaira(balance)}</p>
+        </Card>
+      )}
 
       <div className={styles.actions}>
         {actions.map(({ label, icon: Icon, href }) => (
@@ -108,8 +118,14 @@ export default function WalletPage() {
       </div>
 
       <p className={styles.sectionLabel}>Wallet transactions</p>
-      <div className={styles.activityList}>
-        {txs.length === 0 ? (
+      <div className={`${styles.activityList} stagger-in`}>
+        {loading ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="skeleton" style={{ height: 52, borderRadius: 12 }} />
+            ))}
+          </div>
+        ) : txs.length === 0 ? (
           <p className={styles.emptyText}>No wallet activity yet.</p>
         ) : (
           txs.map((tx, i) => {

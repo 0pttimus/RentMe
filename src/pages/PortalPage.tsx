@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/Card";
 import ActionSheet from "@/components/ui/ActionSheet";
 import { getMyProperties, getLandlordReservations, getReservations, approveReservation, rejectReservation, deleteProperty, landlordUnreserve } from "@/lib/api/client";
 import { formatNaira, formatStatus } from "@/lib/format";
+import { SkeletonText, SkeletonCard } from "@/components/ui/Skeleton";
 import { useUnreadCount } from "@/hooks/useUnreadCount";
 import styles from "./PortalPage.module.scss";
 
@@ -54,13 +55,15 @@ function RenterTab() {
   return (
     <div className={styles.section}>
       {loading ? (
-        <div className="spinnerWrap"><div className="spinner" /></div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)}
+        </div>
       ) : (
         <>
           {active.length > 0 && (
             <>
               <p className={styles.sectionLabel}>Active Rentals ({active.length})</p>
-              <div className={styles.rentalList}>
+              <div className={`${styles.rentalList} stagger-in`}>
                 {active.map(r => {
                   const photos = safeParse(r.photos);
                   const linkTo = ["inspecting", "expired_inspection", "extend_pending", "pending_landlord"].includes(r.status) ? `/reserve/${r.property_id}` : `/property/${r.property_id}`;
@@ -91,7 +94,7 @@ function RenterTab() {
           ) : past.length === 0 ? (
             <Card className={styles.emptyCard}><p className={styles.emptyText}>No past rentals.</p></Card>
           ) : (
-            <div className={styles.rentalList}>
+            <div className={`${styles.rentalList} stagger-in`}>
               {past.map(r => {
                 const photos = safeParse(r.photos);
                 return (
@@ -182,7 +185,10 @@ function ProviderTab() {
       </div>
 
       {loading ? (
-        <div className="spinnerWrap"><div className="spinner" /></div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, paddingRight: 16 }}>
+          <SkeletonText lines={2} />
+          {Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)}
+        </div>
       ) : (
         <>
           {pendingRequests.length > 0 && (

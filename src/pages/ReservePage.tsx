@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Check, Clock, X, Home, AlertTriangle, ExternalLink, MapPin } from "lucide-react";
 import { Card } from "@/components/ui/Card";
+import { SkeletonTitle } from "@/components/ui/Skeleton";
 import { getProperty, createReservation, getReservationByProperty, payReservation, depositToEscrow, cancelReservation, backOutReservation, payBalance, extendInspection } from "@/lib/api/client";
 import { formatNaira } from "@/lib/format";
 import styles from "./ReservePage.module.scss";
@@ -118,7 +119,20 @@ export default function ReservePage() {
   };
 
   if (loading) {
-    return <div className={["page-content", styles.loadingWrap].join(" ")}><div className={styles.iosSpinner} /></div>;
+    return (
+      <div className={["page-content", styles.page].join(" ")}>
+        <div className="page-header">
+          <SkeletonTitle />
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, padding: "0 16px" }}>
+          <div className="skeleton" style={{ width: "100%", height: 180, borderRadius: 16 }} />
+          <div className="skeleton" style={{ height: 20, width: "60%", borderRadius: 8 }} />
+          <div className="skeleton" style={{ height: 12, width: "40%", borderRadius: 6 }} />
+          <div className="skeleton" style={{ height: 48, width: "100%", borderRadius: 14 }} />
+          <div className="skeleton" style={{ height: 48, width: "100%", borderRadius: 14 }} />
+        </div>
+      </div>
+    );
   }
 
   if (!property) {

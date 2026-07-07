@@ -52,7 +52,7 @@ export default function MarketsPage() {
 
       <p className={styles.subtitle}>What do you want to rent?</p>
 
-      <div className={styles.grid}>
+      <div className={`${styles.grid} stagger-in`}>
         {filtered.map((cat) => (
           <Link key={cat.slug} to={`/markets/category/${cat.slug}`} className={styles.card}>
             <span className={styles.emoji}>{cat.emoji}</span>

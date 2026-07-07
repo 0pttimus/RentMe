@@ -3,6 +3,7 @@ import { Link, Navigate, useParams, useNavigate } from "react-router-dom";
 import { ChevronLeft, MapPin, SlidersHorizontal, ShieldCheck } from "lucide-react";
 import { getCategory, CATEGORY_PROPERTY_TYPES, type RentalCategory } from "@/lib/market-categories";
 import { getProperties, getMyReservations } from "@/lib/api/client";
+import { SkeletonCard } from "@/components/ui/Skeleton";
 interface RentalItem { id: string; category: string; title: string; images: string[]; location: string; area: string | null; state: string; price: number; priceLabel: string; verified: boolean; rentPeriod: string; specs: Record<string, string>; provider: { initials: string; name: string; avatar: string | null }; verificationCount: number; landlordId: string; rejectedByLandlord: boolean }
 import LocationPicker from "@/components/LocationPicker";
 import styles from "./CategoryMarketPage.module.scss";
@@ -191,11 +192,10 @@ export default function CategoryMarketPage() {
         </div>
       )}
 
-      <div className={styles.list}>
+      <div className={`${styles.list} stagger-in`}>
         {loading ? (
-          <div className={styles.loadingState}>
-            <div className="spinner" />
-            <p className={styles.loadingText}>Searching for you, we'll display them shortly.</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)}
           </div>
         ) : filtered.length === 0 && items.length === 0 ? (
           <div className={styles.empty}>
